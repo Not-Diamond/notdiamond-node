@@ -1,5 +1,70 @@
-# typescript-swc-starter
+# NotDiamond Node API Library
 
+This library provides convenient access to the NotDiamond model routing API from TypeScript or JavaScript.
+
+It is generated from our OpenAPI specification with Stainless.
+
+To learn how to use the NotDiamond API, check out our API Reference and Documentation.
+
+## Installation
+
+```sh
+npm install notdiamond
+```
+
+You can import in Deno via:
+
+```ts
+import NotDiamond from 'https://deno.land/x/notdiamond@v1.0.0/mod.ts';
+```
+
+## Usage
+
+The full API of this library can be found in `api.md` file along with many code examples. The code below shows how to get started using the chat completions API.
+
+```ts
+import NotDiamond from 'notdiamond';
+
+const notdiamond = new NotDiamond({
+  apiKey: process.env['NOTDIAMOND_API_KEY'], // This is the default and can be omitted
+});
+
+async function main() {
+  const chatCompletion = await notdiamond.chat.completions.create({
+    messages: [{ role: 'user', content: 'Say this is a test' }],
+    model: 'gpt-3.5-turbo',
+  });
+}
+
+main();
+```
+
+## Streaming Responses
+
+We provide support for streaming responses using Server Sent Events (SSE).
+
+```ts
+import NotDiamond from 'notdiamond';
+
+const notdiamond = new NotDiamond();
+
+async function main() {
+  const stream = await notdiamond.chat.completions.create({
+    model: 'gpt-4',
+    messages: [{ role: 'user', content: 'Say this is a test' }],
+    stream: true,
+  });
+  for await (const chunk of stream) {
+    process.stdout.write(chunk.choices[0]?.delta?.content || '');
+  }
+}
+
+main();
+```
+
+
+
+### TO DELETE
 A simple node boilerplate made in typescript using swc which generates `cjs` and `esm` modules.
 
 ## Clone repository and install dependencies
