@@ -49,22 +49,25 @@ import NotDiamond from 'notdiamond';
 const notdiamond = new NotDiamond();
 
 async function main() {
-  const stream = await notdiamond.chat.completions.create({
-    model: 'gpt-4',
-    messages: [{ role: 'user', content: 'Say this is a test' }],
-    stream: true,
+  const { providers, session_id } = await notdiamond.hashModelSelect({
+    messages: [{ content: 'What is 12x12?', role: 'user' }],
+    llmProviders: [
+      { provider: 'openai', model: 'gpt-4o' }
+      { provider: 'anthropic', model: 'claude-3-opus-20240229' },
+      { provider: 'google', model: 'gemini-1.5-pro' },
+    ],
+    preferenceWeights: { quality: .7, cost: .1, latency: .2 },
   });
-  for await (const chunk of stream) {
-    process.stdout.write(chunk.choices[0]?.delta?.content || '');
-  }
+
+  console.log(providers);
+  console.log(session_id);
 }
 
 main();
 ```
 
-
-
 ### TO DELETE
+
 A simple node boilerplate made in typescript using swc which generates `cjs` and `esm` modules.
 
 ## Clone repository and install dependencies
