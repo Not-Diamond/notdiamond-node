@@ -19,11 +19,13 @@ export interface Tool {
   type: string;
   functions: Record<string, string>;
 }
+export interface Message {
+  content: string;
+  role: 'user' | 'assistant' | 'system';
+}
+
 export interface HashModelSelectOptions {
-  messages: {
-    content: string;
-    role: 'user' | 'assistant' | 'system';
-  }[];
+  messages: Message[];
   llmProviders: Provider[];
   tools?: Tool[];
   maxModelDepth?: number;
@@ -72,16 +74,21 @@ export class NotDiamond {
 
   constructor(options: NotDiamondOptions) {
     this.apiKey = options.apiKey;
+    console.log('NotDiamond initialized with apiKey:', this.apiKey);
   }
 
   private getAuthHeader(): string {
-    return `Bearer ${this.apiKey}`;
+    const authHeader = `Bearer ${this.apiKey}`;
+    console.log('Generated auth header:', authHeader);
+    return authHeader;
   }
 
   private async postRequest<T>(
     url: string,
     body: object,
   ): Promise<T | NotDiamondErrorResponse> {
+    console.log('Sending POST request to URL:', url);
+    console.log('Request body:', body);
     try {
       const response = await fetch(url, {
         method: 'POST',
@@ -93,13 +100,19 @@ export class NotDiamond {
         body: JSON.stringify(body),
       });
 
+      console.log('Response status:', response.status);
+
       if (!response.ok) {
         const errorData = await response.json();
+        console.error('Error response data:', errorData);
         return { detail: errorData.detail };
       }
 
-      return await response.json();
+      const responseData = await response.json();
+      console.log('Response data:', responseData);
+      return responseData;
     } catch (error) {
+      console.error('An unexpected error occurred:', error);
       return { detail: 'An unexpected error occurred.' };
     }
   }
@@ -108,6 +121,7 @@ export class NotDiamond {
     options: HashModelSelectOptions,
   ): Promise<HashModelSelectSuccessResponse | NotDiamondErrorResponse> {
     const url = `${this.baseUrl}/v2/optimizer/hashModelSelect`;
+    console.log('Calling hashModelSelect with options:', options);
     return this.postRequest<HashModelSelectSuccessResponse>(url, {
       messages: options.messages,
       preference_weights: options.preferenceWeights,
@@ -121,6 +135,7 @@ export class NotDiamond {
     options: FeedbackOptions,
   ): Promise<FeedbackSuccessResponse | NotDiamondErrorResponse> {
     const url = `${this.baseUrl}/v1/report/metrics/feedback`;
+    console.log('Calling feedback with options:', options);
     return this.postRequest<FeedbackSuccessResponse>(url, {
       session_id: options.sessionId,
       feedback: options.feedback,
@@ -132,6 +147,7 @@ export class NotDiamond {
     options: LatencyOptions,
   ): Promise<LatencySuccessResponse | NotDiamondErrorResponse> {
     const url = `${this.baseUrl}/v1/report/metrics/latency`;
+    console.log('Calling latency with options:', options);
     return this.postRequest<LatencySuccessResponse>(url, {
       session_id: options.sessionId,
       feedback: options.feedback,

@@ -1,9 +1,4 @@
-describe('Unit testing', () => {
-  it('should working', () => {
-    expect('AZERTY').toBe('AZERTY');
-  });
-});
-
+import 'dotenv/config';
 import {
   FeedbackOptions,
   FeedbackSuccessResponse,
@@ -11,22 +6,32 @@ import {
   HashModelSelectSuccessResponse,
   LatencyOptions,
   LatencySuccessResponse,
+  Message,
   NotDiamond,
   NotDiamondErrorResponse,
   NotDiamondOptions,
-} from '../notdiamond.js';
+  Provider,
+} from '../notdiamond';
 
+const messages: Message[] = [{ content: 'What is 12x12?', role: 'user' }];
+const llmProviders: Provider[] = [
+  { provider: 'openai', model: 'gpt-4' },
+  { provider: 'anthropic', model: 'claude-3-opus-20240229' },
+  { provider: 'google', model: 'gemini-1.5-pro' },
+];
+
+const preferenceWeights = { quality: 0.7, cost: 0.1, latency: 0.2 };
 describe('NotDiamond', () => {
-  const apiKey = 'test-api-key';
+  const apiKey = process.env.NOTDIAMOND_API_KEY ?? 'test-api-key';
   const notDiamondOptions: NotDiamondOptions = { apiKey };
   const notDiamond = new NotDiamond(notDiamondOptions);
 
   describe('hashModelSelect', () => {
     it('should return success response', async () => {
       const options: HashModelSelectOptions = {
-        messages: [{ content: 'Hello', role: 'user' }],
-        llmProviders: [{ provider: 'provider1', model: 'model1' }],
-        preferenceWeights: { quality: 1, cost: 1 },
+        messages,
+        llmProviders: llmProviders,
+        preferenceWeights,
       };
 
       const response = (await notDiamond.hashModelSelect(
@@ -38,9 +43,9 @@ describe('NotDiamond', () => {
 
     it('should return error response on failure', async () => {
       const options: HashModelSelectOptions = {
-        messages: [{ content: 'Hello', role: 'user' }],
-        llmProviders: [{ provider: 'provider1', model: 'model1' }],
-        preferenceWeights: { quality: 1, cost: 1 },
+        messages,
+        llmProviders,
+        preferenceWeights,
       };
 
       jest.spyOn(global, 'fetch').mockImplementation(() =>
@@ -61,8 +66,8 @@ describe('NotDiamond', () => {
     it('should return success response', async () => {
       const options: FeedbackOptions = {
         sessionId: 'session-id',
-        feedback: { accuracy: 5 },
-        provider: { provider: 'provider1', model: 'model1' },
+        feedback: { accuracy: 0.5 },
+        provider: { provider: 'openai', model: 'gpt-4' },
       };
 
       const response = (await notDiamond.feedback(
@@ -74,9 +79,9 @@ describe('NotDiamond', () => {
 
     it('should return error response on failure', async () => {
       const options: FeedbackOptions = {
-        sessionId: 'session-id',
-        feedback: { accuracy: 5 },
-        provider: { provider: 'provider1', model: 'model1' },
+        sessionId: 'session-id-1',
+        feedback: { accuracy: 0.5 },
+        provider: { provider: 'openai', model: 'gpt-4' },
       };
 
       jest.spyOn(global, 'fetch').mockImplementation(() =>
@@ -96,9 +101,9 @@ describe('NotDiamond', () => {
   describe('latency', () => {
     it('should return success response', async () => {
       const options: LatencyOptions = {
-        sessionId: 'session-id',
-        feedback: { accuracy: 5 },
-        provider: { provider: 'provider1', model: 'model1' },
+        sessionId: 'session-id-1',
+        feedback: { accuracy: 0.5 },
+        provider: { provider: 'openai', model: 'gpt-4' },
       };
 
       const response = (await notDiamond.latency(
@@ -110,9 +115,9 @@ describe('NotDiamond', () => {
 
     it('should return error response on failure', async () => {
       const options: LatencyOptions = {
-        sessionId: 'session-id',
-        feedback: { accuracy: 5 },
-        provider: { provider: 'provider1', model: 'model1' },
+        sessionId: 'session-id-1',
+        feedback: { accuracy: 0.5 },
+        provider: { provider: 'openai', model: 'gpt-4' },
       };
 
       jest.spyOn(global, 'fetch').mockImplementation(() =>

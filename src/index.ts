@@ -1,1 +1,1 @@
-export * from './notdiamond.js';
+export * from './notdiamond';

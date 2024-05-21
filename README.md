@@ -25,38 +25,17 @@ The full API of this library can be found in `api.md` file along with many code 
 ```ts
 import NotDiamond from 'notdiamond';
 
-const notdiamond = new NotDiamond({
-  apiKey: process.env['NOTDIAMOND_API_KEY'], // This is the default and can be omitted
-});
-
-async function main() {
-  const chatCompletion = await notdiamond.chat.completions.create({
-    messages: [{ role: 'user', content: 'Say this is a test' }],
-    model: 'gpt-3.5-turbo',
-  });
-}
-
-main();
-```
-
-## Streaming Responses
-
-We provide support for streaming responses using Server Sent Events (SSE).
-
-```ts
-import NotDiamond from 'notdiamond';
-
 const notdiamond = new NotDiamond();
 
 async function main() {
   const { providers, session_id } = await notdiamond.hashModelSelect({
     messages: [{ content: 'What is 12x12?', role: 'user' }],
     llmProviders: [
-      { provider: 'openai', model: 'gpt-4o' }
+      { provider: 'openai', model: 'gpt-4o' },
       { provider: 'anthropic', model: 'claude-3-opus-20240229' },
       { provider: 'google', model: 'gemini-1.5-pro' },
     ],
-    preferenceWeights: { quality: .7, cost: .1, latency: .2 },
+    preferenceWeights: { quality: 0.7, cost: 0.1, latency: 0.2 },
   });
 
   console.log(providers);
