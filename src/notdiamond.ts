@@ -124,10 +124,12 @@ export class NotDiamond {
     console.log('Calling hashModelSelect with options:', options);
     return this.postRequest<HashModelSelectSuccessResponse>(url, {
       messages: options.messages,
-      preference_weights: options.preferenceWeights,
       llm_providers: options.llmProviders,
-      max_model_depth: options.maxModelDepth,
-      tools: options.tools,
+      ...(options.preferenceWeights && {
+        preference_weights: options.preferenceWeights,
+      }),
+      ...(options.maxModelDepth && { max_model_depth: options.maxModelDepth }),
+      ...(options.tools && { tools: options.tools }),
     });
   }
 
