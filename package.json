@@ -25,10 +25,15 @@
     "dist"
   ],
   "keywords": [
-    "boilerplate",
+    "ai",
+    "not-diamond",
     "typescript",
-    "release",
-    "swc"
+    "openai",
+    "chatgpt",
+    "anthropic",
+    "claude",
+    "gemini",
+    "model router"
   ],
   "scripts": {
     "prepare": "husky install",
@@ -86,5 +91,9 @@
   },
   "resolutions": {
     "wrap-ansi": "7.0.0"
+  },
+  "engines": {
+    "node": ">=20",
+    "npm": ">=8"
   }
 }

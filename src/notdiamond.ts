@@ -2,6 +2,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
+const BASE_URL = 'https://not-diamond-server.onrender.com';
+const HASH_MODEL_SELECT_URL = `${BASE_URL}/v2/optimizer/hashModelSelect`;
+const FEEDBACK_URL = `${BASE_URL}/v1/report/metrics/feedback`;
+const LATENCY_URL = `${BASE_URL}/v1/report/metrics/latency`;
+
 export interface NotDiamondOptions {
   apiKey: string;
 }
@@ -70,7 +75,6 @@ export interface LatencySuccessResponse {
 
 export class NotDiamond {
   private apiKey: string;
-  private baseUrl: string = 'https://not-diamond-server.onrender.com';
 
   constructor(options: NotDiamondOptions) {
     this.apiKey = options.apiKey;
@@ -120,25 +124,28 @@ export class NotDiamond {
   async hashModelSelect(
     options: HashModelSelectOptions,
   ): Promise<HashModelSelectSuccessResponse | NotDiamondErrorResponse> {
-    const url = `${this.baseUrl}/v2/optimizer/hashModelSelect`;
     console.log('Calling hashModelSelect with options:', options);
-    return this.postRequest<HashModelSelectSuccessResponse>(url, {
-      messages: options.messages,
-      llm_providers: options.llmProviders,
-      ...(options.preferenceWeights && {
-        preference_weights: options.preferenceWeights,
-      }),
-      ...(options.maxModelDepth && { max_model_depth: options.maxModelDepth }),
-      ...(options.tools && { tools: options.tools }),
-    });
+    return this.postRequest<HashModelSelectSuccessResponse>(
+      HASH_MODEL_SELECT_URL,
+      {
+        messages: options.messages,
+        llm_providers: options.llmProviders,
+        ...(options.preferenceWeights && {
+          preference_weights: options.preferenceWeights,
+        }),
+        ...(options.maxModelDepth && {
+          max_model_depth: options.maxModelDepth,
+        }),
+        ...(options.tools && { tools: options.tools }),
+      },
+    );
   }
 
   async feedback(
     options: FeedbackOptions,
   ): Promise<FeedbackSuccessResponse | NotDiamondErrorResponse> {
-    const url = `${this.baseUrl}/v1/report/metrics/feedback`;
     console.log('Calling feedback with options:', options);
-    return this.postRequest<FeedbackSuccessResponse>(url, {
+    return this.postRequest<FeedbackSuccessResponse>(FEEDBACK_URL, {
       session_id: options.sessionId,
       feedback: options.feedback,
       provider: options.provider,
@@ -148,9 +155,8 @@ export class NotDiamond {
   async latency(
     options: LatencyOptions,
   ): Promise<LatencySuccessResponse | NotDiamondErrorResponse> {
-    const url = `${this.baseUrl}/v1/report/metrics/latency`;
     console.log('Calling latency with options:', options);
-    return this.postRequest<LatencySuccessResponse>(url, {
+    return this.postRequest<LatencySuccessResponse>(LATENCY_URL, {
       session_id: options.sessionId,
       feedback: options.feedback,
       provider: options.provider,
