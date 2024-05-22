@@ -2,9 +2,7 @@
 
 This library provides convenient access to the NotDiamond model routing API from TypeScript or JavaScript.
 
-It is generated from our OpenAPI specification with Stainless.
-
-To learn how to use the NotDiamond API, check out our API Reference and Documentation.
+To learn how to use the NotDiamond API, check out our [API Reference and Documentation.](https://notdiamond.readme.io/v0.1.0-beta/docs/getting-started)
 
 ## Installation
 
