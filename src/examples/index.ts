@@ -1,4 +1,4 @@
-import { NotDiamond } from '../src/notdiamond';
+import { NotDiamond } from '../notdiamond';
 
 const notDiamond = new NotDiamond({
   apiKey: process.env.NOTDIAMOND_API_KEY,
