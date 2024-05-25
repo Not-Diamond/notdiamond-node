@@ -21,7 +21,7 @@ import { NotDiamond } from 'https://deno.land/x/notdiamond@v1.0.0/mod.ts';
 The full API of this library can be found in `api.md` file along with many code examples. The code below shows how to get started using the chat completions API.
 
 ```ts
-import { NotDiamond } from '../src/notdiamond';
+import { NotDiamond } from 'notdiamond';
 
 const notDiamond = new NotDiamond({
   apiKey: process.env.NOTDIAMOND_API_KEY,
