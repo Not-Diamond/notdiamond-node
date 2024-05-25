@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 const BASE_URL = 'https://not-diamond-server.onrender.com';
 const HASH_MODEL_SELECT_URL = `${BASE_URL}/v2/optimizer/hashModelSelect`;
@@ -8,7 +7,7 @@ const FEEDBACK_URL = `${BASE_URL}/v1/report/metrics/feedback`;
 const LATENCY_URL = `${BASE_URL}/v1/report/metrics/latency`;
 
 export interface NotDiamondOptions {
-  apiKey: string;
+  apiKey?: string;
 }
 
 export interface Provider {
@@ -76,14 +75,12 @@ export interface LatencySuccessResponse {
 export class NotDiamond {
   private apiKey: string;
 
-  constructor(options: NotDiamondOptions) {
-    this.apiKey = options.apiKey;
-    console.log('NotDiamond initialized with apiKey:', this.apiKey);
+  constructor(options: NotDiamondOptions = {}) {
+    this.apiKey = options.apiKey || process.env.NOTDIAMOND_API_KEY || '';
   }
 
   private getAuthHeader(): string {
     const authHeader = `Bearer ${this.apiKey}`;
-    console.log('Generated auth header:', authHeader);
     return authHeader;
   }
 
@@ -91,8 +88,6 @@ export class NotDiamond {
     url: string,
     body: object,
   ): Promise<T | NotDiamondErrorResponse> {
-    console.log('Sending POST request to URL:', url);
-    console.log('Request body:', body);
     try {
       const response = await fetch(url, {
         method: 'POST',
@@ -104,19 +99,14 @@ export class NotDiamond {
         body: JSON.stringify(body),
       });
 
-      console.log('Response status:', response.status);
-
       if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Error response data:', errorData);
+        const errorData = (await response.json()) as NotDiamondErrorResponse;
         return { detail: errorData.detail };
       }
 
-      const responseData = await response.json();
-      console.log('Response data:', responseData);
+      const responseData = (await response.json()) as T;
       return responseData;
     } catch (error) {
-      console.error('An unexpected error occurred:', error);
       return { detail: 'An unexpected error occurred.' };
     }
   }
@@ -124,7 +114,6 @@ export class NotDiamond {
   async hashModelSelect(
     options: HashModelSelectOptions,
   ): Promise<HashModelSelectSuccessResponse | NotDiamondErrorResponse> {
-    console.log('Calling hashModelSelect with options:', options);
     return this.postRequest<HashModelSelectSuccessResponse>(
       HASH_MODEL_SELECT_URL,
       {
@@ -144,7 +133,6 @@ export class NotDiamond {
   async feedback(
     options: FeedbackOptions,
   ): Promise<FeedbackSuccessResponse | NotDiamondErrorResponse> {
-    console.log('Calling feedback with options:', options);
     return this.postRequest<FeedbackSuccessResponse>(FEEDBACK_URL, {
       session_id: options.sessionId,
       feedback: options.feedback,
@@ -155,7 +143,6 @@ export class NotDiamond {
   async latency(
     options: LatencyOptions,
   ): Promise<LatencySuccessResponse | NotDiamondErrorResponse> {
-    console.log('Calling latency with options:', options);
     return this.postRequest<LatencySuccessResponse>(LATENCY_URL, {
       session_id: options.sessionId,
       feedback: options.feedback,
