@@ -63,7 +63,9 @@ export interface FeedbackSuccessResponse {
 
 export interface LatencyOptions {
   sessionId: string;
-  feedback: Feedback;
+  feedback: {
+    tokens_per_second: number;
+  };
   provider: Provider;
 }
 
@@ -77,10 +79,12 @@ export class NotDiamond {
 
   constructor(options: NotDiamondOptions = {}) {
     this.apiKey = options.apiKey || process.env.NOTDIAMOND_API_KEY || '';
+    console.log('NotDiamond initialized with apiKey:', this.apiKey);
   }
 
   private getAuthHeader(): string {
     const authHeader = `Bearer ${this.apiKey}`;
+    console.log('Generated auth header:', authHeader);
     return authHeader;
   }
 
@@ -88,6 +92,8 @@ export class NotDiamond {
     url: string,
     body: object,
   ): Promise<T | NotDiamondErrorResponse> {
+    console.log('Sending POST request to URL:', url);
+    console.log('Request body:', body);
     try {
       const response = await fetch(url, {
         method: 'POST',
@@ -99,14 +105,19 @@ export class NotDiamond {
         body: JSON.stringify(body),
       });
 
+      console.log('Response status:', response.status);
+
       if (!response.ok) {
         const errorData = (await response.json()) as NotDiamondErrorResponse;
+        console.error('Error response data:', errorData);
         return { detail: errorData.detail };
       }
 
       const responseData = (await response.json()) as T;
+      console.log('Response data:', responseData);
       return responseData;
     } catch (error) {
+      console.error('An unexpected error occurred:', error);
       return { detail: 'An unexpected error occurred.' };
     }
   }
@@ -114,6 +125,7 @@ export class NotDiamond {
   async hashModelSelect(
     options: HashModelSelectOptions,
   ): Promise<HashModelSelectSuccessResponse | NotDiamondErrorResponse> {
+    console.log('Calling hashModelSelect with options:', options);
     return this.postRequest<HashModelSelectSuccessResponse>(
       HASH_MODEL_SELECT_URL,
       {
@@ -133,6 +145,7 @@ export class NotDiamond {
   async feedback(
     options: FeedbackOptions,
   ): Promise<FeedbackSuccessResponse | NotDiamondErrorResponse> {
+    console.log('Calling feedback with options:', options);
     return this.postRequest<FeedbackSuccessResponse>(FEEDBACK_URL, {
       session_id: options.sessionId,
       feedback: options.feedback,
@@ -143,6 +156,7 @@ export class NotDiamond {
   async latency(
     options: LatencyOptions,
   ): Promise<LatencySuccessResponse | NotDiamondErrorResponse> {
+    console.log('Calling latency with options:', options);
     return this.postRequest<LatencySuccessResponse>(LATENCY_URL, {
       session_id: options.sessionId,
       feedback: options.feedback,
