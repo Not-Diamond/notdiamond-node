@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 const BASE_URL = 'https://not-diamond-server.onrender.com';
 const HASH_MODEL_SELECT_URL = `${BASE_URL}/v2/optimizer/hashModelSelect`;
@@ -8,7 +7,7 @@ const FEEDBACK_URL = `${BASE_URL}/v1/report/metrics/feedback`;
 const LATENCY_URL = `${BASE_URL}/v1/report/metrics/latency`;
 
 export interface NotDiamondOptions {
-  apiKey: string;
+  apiKey?: string;
 }
 
 export interface Provider {
@@ -64,7 +63,9 @@ export interface FeedbackSuccessResponse {
 
 export interface LatencyOptions {
   sessionId: string;
-  feedback: Feedback;
+  feedback: {
+    tokens_per_second: number;
+  };
   provider: Provider;
 }
 
@@ -76,8 +77,8 @@ export interface LatencySuccessResponse {
 export class NotDiamond {
   private apiKey: string;
 
-  constructor(options: NotDiamondOptions) {
-    this.apiKey = options.apiKey;
+  constructor(options: NotDiamondOptions = {}) {
+    this.apiKey = options.apiKey || process.env.NOTDIAMOND_API_KEY || '';
     console.log('NotDiamond initialized with apiKey:', this.apiKey);
   }
 
@@ -107,12 +108,12 @@ export class NotDiamond {
       console.log('Response status:', response.status);
 
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = (await response.json()) as NotDiamondErrorResponse;
         console.error('Error response data:', errorData);
         return { detail: errorData.detail };
       }
 
-      const responseData = await response.json();
+      const responseData = (await response.json()) as T;
       console.log('Response data:', responseData);
       return responseData;
     } catch (error) {
