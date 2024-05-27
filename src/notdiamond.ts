@@ -36,9 +36,9 @@ export interface HashModelSelectOptions {
   preferenceWeights?: {
     quality: number;
     cost: number;
-    latency?: number;
+    latency: number;
   };
-  preference_id?: string;
+  preferenceId?: string;
 }
 
 export interface HashModelSelectSuccessResponse {
