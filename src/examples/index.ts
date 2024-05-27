@@ -54,7 +54,7 @@ async function performLatencyCheck(
 ): Promise<LatencySuccessResponse | null> {
   const result = await notDiamond.latency({
     sessionId,
-    feedback: { tokens_per_second: 23 },
+    feedback: { tokensPerSecond: 23 },
     provider: { provider: 'openai', model: 'gpt-4' },
   });
 

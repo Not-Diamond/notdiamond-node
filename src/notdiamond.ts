@@ -19,9 +19,14 @@ export interface NotDiamondErrorResponse {
   detail: string;
 }
 
+export interface ToolFunction {
+  description?: string;
+  name: string;
+  parameters?: Record<string, unknown>;
+}
 export interface Tool {
   type: string;
-  functions: Record<string, string>;
+  function: ToolFunction;
 }
 export interface Message {
   content: string;
@@ -64,7 +69,7 @@ export interface FeedbackSuccessResponse {
 export interface LatencyOptions {
   sessionId: string;
   feedback: {
-    tokens_per_second: number;
+    tokensPerSecond: number;
   };
   provider: Provider;
 }
@@ -159,7 +164,9 @@ export class NotDiamond {
     console.log('Calling latency with options:', options);
     return this.postRequest<LatencySuccessResponse>(LATENCY_URL, {
       session_id: options.sessionId,
-      feedback: options.feedback,
+      feedback: {
+        tokens_per_second: options.feedback.tokensPerSecond,
+      },
       provider: options.provider,
     });
   }
