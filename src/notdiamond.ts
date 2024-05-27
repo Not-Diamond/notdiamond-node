@@ -19,9 +19,14 @@ export interface NotDiamondErrorResponse {
   detail: string;
 }
 
+export interface ToolFunction {
+  description?: string;
+  name: string;
+  parameters: Record<string, string>;
+}
 export interface Tool {
   type: string;
-  functions: Record<string, string>;
+  function: ToolFunction;
 }
 export interface Message {
   content: string;
