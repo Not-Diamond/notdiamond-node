@@ -22,7 +22,7 @@ export interface NotDiamondErrorResponse {
 export interface ToolFunction {
   description?: string;
   name: string;
-  parameters?: Record<string, string>;
+  parameters?: Record<string, unknown>;
 }
 export interface Tool {
   type: string;
