@@ -164,7 +164,9 @@ export class NotDiamond {
     console.log('Calling latency with options:', options);
     return this.postRequest<LatencySuccessResponse>(LATENCY_URL, {
       session_id: options.sessionId,
-      feedback: options.feedback,
+      feedback: {
+        tokens_per_second: options.feedback.tokensPerSecond,
+      },
       provider: options.provider,
     });
   }
