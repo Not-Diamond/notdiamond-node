@@ -73,7 +73,7 @@ async function provideFeedback(
 ): Promise<FeedbackSuccessResponse | null> {
   const result = await notDiamond.feedback({
     sessionId,
-    feedback: { accuracy: 0.9 },
+    feedback: { accuracy: 1 },
     provider: { provider: 'openai', model: 'gpt-4' },
   });
 
