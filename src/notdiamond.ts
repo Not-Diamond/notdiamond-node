@@ -64,7 +64,7 @@ export interface FeedbackSuccessResponse {
 export interface LatencyOptions {
   sessionId: string;
   feedback: {
-    tokens_per_second: number;
+    tokensPerSecond: number;
   };
   provider: Provider;
 }
