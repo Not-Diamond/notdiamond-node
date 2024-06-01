@@ -130,6 +130,8 @@ export class NotDiamond {
           max_model_depth: options.maxModelDepth,
         }),
         ...(options.tools && { tools: options.tools }),
+        ...(options.hashContent && { hash_content: options.hashContent }),
+        ...(options.preferenceId && { preference_id: options.preferenceId }),
       },
     );
   }

@@ -2,6 +2,8 @@
 
 This library provides convenient access to the NotDiamond model routing API from TypeScript or JavaScript.
 
+To use the API, you will need to sign up for a NotDiamond account and obtain an API key. [You can sign up here.](https://app.notdiamond.ai)
+
 To learn how to use the NotDiamond API, check out our [API Reference and Documentation.](https://notdiamond.readme.io/v0.1.0-beta/docs/getting-started)
 
 ## Installation
