@@ -1,7 +1,6 @@
 import {
   FeedbackSuccessResponse,
   HashModelSelectSuccessResponse,
-  LatencySuccessResponse,
   NotDiamond,
 } from '../notdiamond';
 
@@ -15,9 +14,6 @@ async function main() {
     if (!hashModelSelectResult) return;
 
     const { session_id } = hashModelSelectResult;
-
-    const latencyResult = await performLatencyCheck(session_id);
-    if (!latencyResult) return;
 
     await provideFeedback(session_id);
   } catch (error) {
@@ -49,31 +45,12 @@ async function performHashModelSelect(): Promise<HashModelSelectSuccessResponse 
   return result;
 }
 
-async function performLatencyCheck(
-  sessionId: string,
-): Promise<LatencySuccessResponse | null> {
-  const result = await notDiamond.latency({
-    sessionId,
-    feedback: { tokensPerSecond: 23 },
-    provider: { provider: 'openai', model: 'gpt-4' },
-  });
-
-  if ('detail' in result) {
-    console.error(result.detail);
-    return null;
-  }
-
-  const { tokens_per_second } = result;
-  console.log({ tokens_per_second });
-  return result;
-}
-
 async function provideFeedback(
   sessionId: string,
 ): Promise<FeedbackSuccessResponse | null> {
   const result = await notDiamond.feedback({
     sessionId,
-    feedback: { accuracy: 0.9 },
+    feedback: { accuracy: 1 },
     provider: { provider: 'openai', model: 'gpt-4' },
   });
 

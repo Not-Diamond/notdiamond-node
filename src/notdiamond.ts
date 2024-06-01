@@ -4,7 +4,6 @@ dotenv.config();
 const BASE_URL = 'https://not-diamond-server.onrender.com';
 const HASH_MODEL_SELECT_URL = `${BASE_URL}/v2/optimizer/hashModelSelect`;
 const FEEDBACK_URL = `${BASE_URL}/v1/report/metrics/feedback`;
-const LATENCY_URL = `${BASE_URL}/v1/report/metrics/latency`;
 
 export interface NotDiamondOptions {
   apiKey?: string;
@@ -44,6 +43,7 @@ export interface HashModelSelectOptions {
     latency: number;
   };
   preferenceId?: string;
+  hashContent?: boolean;
 }
 
 export interface HashModelSelectSuccessResponse {
@@ -64,19 +64,6 @@ export interface FeedbackOptions {
 export interface FeedbackSuccessResponse {
   session_id: string;
   feedback: Feedback;
-}
-
-export interface LatencyOptions {
-  sessionId: string;
-  feedback: {
-    tokensPerSecond: number;
-  };
-  provider: Provider;
-}
-
-export interface LatencySuccessResponse {
-  session_id: string;
-  tokens_per_second: number;
 }
 
 export class NotDiamond {
@@ -154,19 +141,6 @@ export class NotDiamond {
     return this.postRequest<FeedbackSuccessResponse>(FEEDBACK_URL, {
       session_id: options.sessionId,
       feedback: options.feedback,
-      provider: options.provider,
-    });
-  }
-
-  async latency(
-    options: LatencyOptions,
-  ): Promise<LatencySuccessResponse | NotDiamondErrorResponse> {
-    console.log('Calling latency with options:', options);
-    return this.postRequest<LatencySuccessResponse>(LATENCY_URL, {
-      session_id: options.sessionId,
-      feedback: {
-        tokens_per_second: options.feedback.tokensPerSecond,
-      },
       provider: options.provider,
     });
   }
