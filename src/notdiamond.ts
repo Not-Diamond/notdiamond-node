@@ -37,11 +37,7 @@ export interface HashModelSelectOptions {
   llmProviders: Provider[];
   tools?: Tool[];
   maxModelDepth?: number;
-  preferenceWeights?: {
-    quality: number;
-    cost: number;
-    latency: number;
-  };
+  tradeoff?: 'cost' | 'latency';
   preferenceId?: string;
   hashContent?: boolean;
 }
@@ -123,14 +119,16 @@ export class NotDiamond {
       {
         messages: options.messages,
         llm_providers: options.llmProviders,
-        ...(options.preferenceWeights && {
-          preference_weights: options.preferenceWeights,
+        ...(options.tradeoff && {
+          tradeoff: options.tradeoff,
         }),
         ...(options.maxModelDepth && {
           max_model_depth: options.maxModelDepth,
         }),
         ...(options.tools && { tools: options.tools }),
-        ...(options.hashContent && { hash_content: options.hashContent }),
+        ...(options.hashContent !== undefined && {
+          hash_content: options.hashContent,
+        }),
         ...(options.preferenceId && { preference_id: options.preferenceId }),
       },
     );

@@ -15,7 +15,6 @@ const llmProviders: Provider[] = [
   { provider: 'anthropic', model: 'claude-3-opus-20240229' },
 ];
 
-const preferenceWeights = { quality: 0.7, cost: 0.1, latency: 0.2 };
 describe('NotDiamond', () => {
   const apiKey = process.env.NOTDIAMOND_API_KEY ?? 'test-api-key';
   const notDiamondOptions: NotDiamondOptions = { apiKey };
@@ -26,7 +25,7 @@ describe('NotDiamond', () => {
       const options: HashModelSelectOptions = {
         messages,
         llmProviders: llmProviders,
-        preferenceWeights,
+        tradeoff: 'latency',
       };
 
       const response = (await notDiamond.hashModelSelect(
@@ -40,7 +39,7 @@ describe('NotDiamond', () => {
       const options: HashModelSelectOptions = {
         messages,
         llmProviders,
-        preferenceWeights,
+        tradeoff: 'latency',
       };
 
       jest.spyOn(global, 'fetch').mockImplementation(() =>
