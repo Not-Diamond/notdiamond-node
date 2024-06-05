@@ -30,7 +30,7 @@ async function performHashModelSelect(): Promise<HashModelSelectSuccessResponse 
       { provider: 'anthropic', model: 'claude-3-opus-20240229' },
       { provider: 'anthropic', model: 'claude-3-sonnet-20240229' },
     ],
-    preferenceWeights: { quality: 0.7, cost: 0.1, latency: 0.2 },
+    tradeoff: 'cost',
     preferenceId: '96d43605-d2d2-4ace-a87a-5edb3c368667',
     maxModelDepth: 2,
   });
