@@ -38,8 +38,7 @@ async function main() {
       { provider: 'anthropic', model: 'claude-3-opus-20240229' },
       { provider: 'anthropic', model: 'claude-3-sonnet-20240229' },
     ],
-    preferenceWeights: { quality: 0.7, cost: 0.1, latency: 0.2 },
-    maxModelDepth: 2,
+    tradeoff: 'cost',
   });
   if ('detail' in result) {
     // There was an error
