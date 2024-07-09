@@ -81,6 +81,8 @@ describe('NotDiamond', () => {
         messages,
         llmProviders,
         tradeoff: 'latency',
+        timeout: 3,
+        default: 1,
       };
 
       jest.spyOn(global, 'fetch').mockImplementation(() =>
