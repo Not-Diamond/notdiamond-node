@@ -1,6 +1,6 @@
 import {
   FeedbackSuccessResponse,
-  HashModelSelectSuccessResponse,
+  ModelSelectSuccessResponse,
   NotDiamond,
 } from '../notdiamond';
 
@@ -10,10 +10,10 @@ const notDiamond = new NotDiamond({
 
 async function main() {
   try {
-    const hashModelSelectResult = await performHashModelSelect();
-    if (!hashModelSelectResult) return;
+    const modelSelectResult = await performModelSelect();
+    if (!modelSelectResult) return;
 
-    const { session_id } = hashModelSelectResult;
+    const { session_id } = modelSelectResult;
 
     await provideFeedback(session_id);
   } catch (error) {
@@ -21,18 +21,17 @@ async function main() {
   }
 }
 
-async function performHashModelSelect(): Promise<HashModelSelectSuccessResponse | null> {
-  const result = await notDiamond.hashModelSelect({
+async function performModelSelect(): Promise<ModelSelectSuccessResponse | null> {
+  const result = await notDiamond.modelSelect({
     messages: [{ content: 'What is 12x12?', role: 'user' }],
     llmProviders: [
       { provider: 'openai', model: 'gpt-4' },
       { provider: 'openai', model: 'gpt-3.5-turbo' },
       { provider: 'anthropic', model: 'claude-3-opus-20240229' },
       { provider: 'anthropic', model: 'claude-3-sonnet-20240229' },
+      { provider: 'google', model: 'gemini-1.5-pro-latest' },
     ],
     tradeoff: 'cost',
-    preferenceId: '96d43605-d2d2-4ace-a87a-5edb3c368667',
-    maxModelDepth: 2,
   });
 
   if ('detail' in result) {

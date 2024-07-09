@@ -2,8 +2,9 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 const BASE_URL = 'https://not-diamond-server.onrender.com';
-const HASH_MODEL_SELECT_URL = `${BASE_URL}/v2/optimizer/hashModelSelect`;
-const FEEDBACK_URL = `${BASE_URL}/v1/report/metrics/feedback`;
+const MODEL_SELECT_URL = `${BASE_URL}/v2/optimizer/modelSelect`;
+const FEEDBACK_URL = `${BASE_URL}/v2/report/metrics/feedback`;
+const DEFAULT_TIMEOUT = 5;
 
 export interface NotDiamondOptions {
   apiKey?: string;
@@ -32,7 +33,7 @@ export interface Message {
   role: 'user' | 'assistant' | 'system';
 }
 
-export interface HashModelSelectOptions {
+export interface ModelSelectOptions {
   messages: Message[];
   llmProviders: Provider[];
   tools?: Tool[];
@@ -40,9 +41,11 @@ export interface HashModelSelectOptions {
   tradeoff?: 'cost' | 'latency';
   preferenceId?: string;
   hashContent?: boolean;
+  timeout?: number;
+  default?: Provider | number | string;
 }
 
-export interface HashModelSelectSuccessResponse {
+export interface ModelSelectSuccessResponse {
   providers: Provider[];
   session_id: string;
 }
@@ -110,27 +113,35 @@ export class NotDiamond {
     }
   }
 
-  async hashModelSelect(
-    options: HashModelSelectOptions,
-  ): Promise<HashModelSelectSuccessResponse | NotDiamondErrorResponse> {
-    console.log('Calling hashModelSelect with options:', options);
-    return this.postRequest<HashModelSelectSuccessResponse>(
-      HASH_MODEL_SELECT_URL,
-      {
-        messages: options.messages,
-        llm_providers: options.llmProviders,
-        ...(options.tradeoff && {
-          tradeoff: options.tradeoff,
-        }),
-        ...(options.maxModelDepth && {
-          max_model_depth: options.maxModelDepth,
-        }),
-        ...(options.tools && { tools: options.tools }),
-        ...(options.hashContent !== undefined && {
-          hash_content: options.hashContent,
-        }),
-        ...(options.preferenceId && { preference_id: options.preferenceId }),
-      },
+  async modelSelect(
+    options: ModelSelectOptions,
+  ): Promise<ModelSelectSuccessResponse | NotDiamondErrorResponse> {
+    console.log('Calling modelSelect with options:', options);
+    const requestBody = {
+      messages: options.messages,
+      llm_providers: options.llmProviders,
+      ...(options.tradeoff && {
+        tradeoff: options.tradeoff,
+      }),
+      ...(options.maxModelDepth && {
+        max_model_depth: options.maxModelDepth,
+      }),
+      ...(options.tools && { tools: options.tools }),
+      ...(options.hashContent !== undefined && {
+        hash_content: options.hashContent,
+      }),
+      ...(options.preferenceId && { preference_id: options.preferenceId }),
+      ...(options.timeout
+        ? { timeout: options.timeout }
+        : {
+            timeout: DEFAULT_TIMEOUT,
+          }),
+      ...(options.default && { default: options.default }),
+    };
+    console.log('Request body:', JSON.stringify(requestBody, null, 2));
+    return this.postRequest<ModelSelectSuccessResponse>(
+      MODEL_SELECT_URL,
+      requestBody,
     );
   }
 
