@@ -29,10 +29,9 @@ async function performModelSelect(): Promise<ModelSelectSuccessResponse | null> 
       { provider: 'openai', model: 'gpt-3.5-turbo' },
       { provider: 'anthropic', model: 'claude-3-opus-20240229' },
       { provider: 'anthropic', model: 'claude-3-sonnet-20240229' },
+      { provider: 'google', model: 'gemini-1.5-pro-latest' },
     ],
     tradeoff: 'cost',
-    preferenceId: '96d43605-d2d2-4ace-a87a-5edb3c368667',
-    maxModelDepth: 2,
   });
 
   if ('detail' in result) {
