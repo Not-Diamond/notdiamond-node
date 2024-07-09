@@ -3,7 +3,7 @@ dotenv.config();
 
 const BASE_URL = 'https://not-diamond-server.onrender.com';
 const MODEL_SELECT_URL = `${BASE_URL}/v2/optimizer/modelSelect`;
-const FEEDBACK_URL = `${BASE_URL}/v1/report/metrics/feedback`;
+const FEEDBACK_URL = `${BASE_URL}/v2/report/metrics/feedback`;
 
 export interface NotDiamondOptions {
   apiKey?: string;
@@ -116,7 +116,7 @@ export class NotDiamond {
     options: ModelSelectOptions,
   ): Promise<ModelSelectSuccessResponse | NotDiamondErrorResponse> {
     console.log('Calling modelSelect with options:', options);
-    return this.postRequest<ModelSelectSuccessResponse>(MODEL_SELECT_URL, {
+    const requestBody = {
       messages: options.messages,
       llm_providers: options.llmProviders,
       ...(options.tradeoff && {
@@ -132,7 +132,12 @@ export class NotDiamond {
       ...(options.preferenceId && { preference_id: options.preferenceId }),
       ...(options.timeout && { timeout: options.timeout }),
       ...(options.default && { default: options.default }),
-    });
+    };
+    console.log('Request body:', JSON.stringify(requestBody, null, 2));
+    return this.postRequest<ModelSelectSuccessResponse>(
+      MODEL_SELECT_URL,
+      requestBody,
+    );
   }
 
   async feedback(

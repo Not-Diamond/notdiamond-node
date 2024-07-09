@@ -7,6 +7,7 @@ import {
   NotDiamondErrorResponse,
   NotDiamondOptions,
   Provider,
+  Tool,
 } from '../notdiamond';
 
 const messages: Message[] = [{ content: 'What is 12x12?', role: 'user' }];
@@ -20,13 +21,45 @@ const llmProviders: Provider[] = [
     model: 'claude-3-opus-20240229',
   },
 ];
+const tools: Tool[] = [
+  {
+    type: 'function',
+    function: {
+      name: 'add',
+      description: 'Adds a and b.',
+      parameters: {
+        type: 'object',
+        properties: {
+          a: { type: 'integer' },
+          b: { type: 'integer' },
+        },
+        required: ['a', 'b'],
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'multiply',
+      description: 'Multiplies a and b.',
+      parameters: {
+        type: 'object',
+        properties: {
+          a: { type: 'integer' },
+          b: { type: 'integer' },
+        },
+        required: ['a', 'b'],
+      },
+    },
+  },
+];
 
 describe('NotDiamond', () => {
   const apiKey = process.env.NOTDIAMOND_API_KEY ?? 'test-api-key';
   const notDiamondOptions: NotDiamondOptions = { apiKey };
   const notDiamond = new NotDiamond(notDiamondOptions);
 
-  describe('modelSelect should choose the best provider', () => {
+  describe('modelSelect should choose the best provider and use tools', () => {
     it('should return success response', async () => {
       const options: ModelSelectOptions = {
         messages,
@@ -34,6 +67,7 @@ describe('NotDiamond', () => {
         tradeoff: 'latency',
         timeout: 10,
         default: llmProviders[0],
+        tools,
       };
 
       const response = (await notDiamond.modelSelect(
