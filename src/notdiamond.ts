@@ -4,6 +4,7 @@ dotenv.config();
 const BASE_URL = 'https://not-diamond-server.onrender.com';
 const MODEL_SELECT_URL = `${BASE_URL}/v2/optimizer/modelSelect`;
 const FEEDBACK_URL = `${BASE_URL}/v2/report/metrics/feedback`;
+const DEFAULT_TIMEOUT = 5;
 
 export interface NotDiamondOptions {
   apiKey?: string;
@@ -130,7 +131,11 @@ export class NotDiamond {
         hash_content: options.hashContent,
       }),
       ...(options.preferenceId && { preference_id: options.preferenceId }),
-      ...(options.timeout && { timeout: options.timeout }),
+      ...(options.timeout
+        ? { timeout: options.timeout }
+        : {
+            timeout: DEFAULT_TIMEOUT,
+          }),
       ...(options.default && { default: options.default }),
     };
     console.log('Request body:', JSON.stringify(requestBody, null, 2));
