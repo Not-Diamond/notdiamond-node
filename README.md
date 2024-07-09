@@ -86,7 +86,7 @@ async function toolCallingExample() {
     messages: [{ content: 'What is 12x12?', role: 'user' }],
     llmProviders: [
       { provider: 'openai', model: 'gpt-4-1106-preview' },
-      { provider: 'anthropic', model: 'claude-3-opus-20240229' },
+      { provider: 'anthropic', model: 'claude-3-sonnet-20240229' },
     ],
     tools: tools,
     tradeoff: 'cost',

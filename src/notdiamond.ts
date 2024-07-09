@@ -130,6 +130,8 @@ export class NotDiamond {
         hash_content: options.hashContent,
       }),
       ...(options.preferenceId && { preference_id: options.preferenceId }),
+      ...(options.timeout && { timeout: options.timeout }),
+      ...(options.default && { default: options.default }),
     });
   }
 

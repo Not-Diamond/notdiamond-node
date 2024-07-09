@@ -14,7 +14,7 @@ const messages: Message[] = [{ content: 'What is 12x12?', role: 'user' }];
 const llmProviders: Provider[] = [
   {
     provider: 'openai',
-    model: 'gpt-4-1106-preview',
+    model: 'gpt-4o-2024-05-13',
   },
   {
     provider: 'anthropic',
@@ -65,6 +65,8 @@ describe('NotDiamond', () => {
         messages,
         llmProviders: llmProviders,
         tradeoff: 'latency',
+        timeout: 10,
+        default: llmProviders[0],
       };
 
       const response = (await notDiamond.modelSelect(
@@ -98,11 +100,15 @@ describe('NotDiamond', () => {
   describe('modelSelect should use tools', () => {
     it('should return success response', async () => {
       const options: ModelSelectOptions = {
-        messages,
-        llmProviders: llmProviders,
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a mathematician with tools at your disposal.',
+          },
+          { role: 'user', content: 'What is 234 + 82234?' },
+        ],
+        llmProviders,
         tools,
-        tradeoff: 'latency',
-        maxModelDepth: 2,
       };
 
       const response = (await notDiamond.modelSelect(

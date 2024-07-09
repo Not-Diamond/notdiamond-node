@@ -1,6 +1,6 @@
 import {
   FeedbackSuccessResponse,
-  HashModelSelectSuccessResponse,
+  ModelSelectSuccessResponse,
   NotDiamond,
 } from '../notdiamond';
 
@@ -10,10 +10,10 @@ const notDiamond = new NotDiamond({
 
 async function main() {
   try {
-    const hashModelSelectResult = await performHashModelSelect();
-    if (!hashModelSelectResult) return;
+    const modelSelectResult = await performModelSelect();
+    if (!modelSelectResult) return;
 
-    const { session_id } = hashModelSelectResult;
+    const { session_id } = modelSelectResult;
 
     await provideFeedback(session_id);
   } catch (error) {
@@ -21,8 +21,8 @@ async function main() {
   }
 }
 
-async function performHashModelSelect(): Promise<HashModelSelectSuccessResponse | null> {
-  const result = await notDiamond.hashModelSelect({
+async function performModelSelect(): Promise<ModelSelectSuccessResponse | null> {
+  const result = await notDiamond.modelSelect({
     messages: [{ content: 'What is 12x12?', role: 'user' }],
     llmProviders: [
       { provider: 'openai', model: 'gpt-4' },
