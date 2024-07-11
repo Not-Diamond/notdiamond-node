@@ -1,4 +1,5 @@
 import * as dotenv from 'dotenv';
+import { version as SDK_VERSION } from '../package.json';
 dotenv.config();
 
 const BASE_URL = 'https://not-diamond-server.onrender.com';
@@ -92,6 +93,7 @@ export class NotDiamond {
           Authorization: this.getAuthHeader(),
           accept: 'application/json',
           'content-type': 'application/json',
+          'User-Agent': `TS-SDK/${SDK_VERSION}`,
         },
         body: JSON.stringify(body),
       });
