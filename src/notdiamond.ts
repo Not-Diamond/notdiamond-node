@@ -3,7 +3,7 @@ import { version as SDK_VERSION } from '../package.json';
 dotenv.config();
 
 const BASE_URL = 'https://not-diamond-server.onrender.com';
-const MODEL_SELECT_URL = `${BASE_URL}/v2/optimizer/modelSelect`;
+const MODEL_SELECT_URL = `${BASE_URL}/v2/modelRouter/modelSelect`;
 const FEEDBACK_URL = `${BASE_URL}/v2/report/metrics/feedback`;
 const DEFAULT_TIMEOUT = 5;
 
