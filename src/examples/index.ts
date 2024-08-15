@@ -4,6 +4,7 @@ import {
   NotDiamond,
 } from '../notdiamond';
 
+// Initialize the NotDiamond client with an API key
 const notDiamond = new NotDiamond({
   apiKey: process.env.NOTDIAMOND_API_KEY,
 });
@@ -22,6 +23,7 @@ async function main() {
 }
 
 async function performModelSelect(): Promise<ModelSelectSuccessResponse | null> {
+  // Use NotDiamond to select the best model based on the given criteria
   const result = await notDiamond.modelSelect({
     messages: [{ content: 'What is 12x12?', role: 'user' }],
     llmProviders: [
@@ -31,7 +33,7 @@ async function performModelSelect(): Promise<ModelSelectSuccessResponse | null> 
       { provider: 'anthropic', model: 'claude-3-sonnet-20240229' },
       { provider: 'google', model: 'gemini-1.5-pro-latest' },
     ],
-    tradeoff: 'cost',
+    tradeoff: 'cost', // Optimize for cost
   });
 
   if ('detail' in result) {
@@ -47,9 +49,10 @@ async function performModelSelect(): Promise<ModelSelectSuccessResponse | null> 
 async function provideFeedback(
   sessionId: string,
 ): Promise<FeedbackSuccessResponse | null> {
+  // Provide feedback on the model's performance
   const result = await notDiamond.feedback({
     sessionId,
-    feedback: { accuracy: 1 },
+    feedback: { accuracy: 1 }, // Indicate high accuracy
     provider: { provider: 'openai', model: 'gpt-4' },
   });
 
