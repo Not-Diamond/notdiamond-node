@@ -26,26 +26,35 @@ Here's a simple example of how to use NotDiamond to select the best model betwee
 import { NotDiamond } from 'notdiamond';
 
 const notDiamond = new NotDiamond({
+  // Optional - automatically loads from environment variable
   apiKey: process.env.NOTDIAMOND_API_KEY,
 });
 
 async function basicExample() {
+  // 1. Select the best model
   const result = await notDiamond.modelSelect({
+    // Define the user's message
     messages: [{ content: 'What is 12x12?', role: 'user' }],
+    // Specify the LLM providers and models to choose from
     llmProviders: [
       { provider: 'openai', model: 'gpt-4o-2024-05-13' },
       { provider: 'anthropic', model: 'claude-3-5-sonnet-20240620' },
       { provider: 'google', model: 'gemini-1.5-pro-latest' },
     ],
+    // Set the optimization criteria to latency
     tradeoff: 'latency',
   });
 
+  // 2. Handle potential errors
   if ('detail' in result) {
     console.error('Error:', result.detail);
     return;
   }
 
+  // 3. Log the results
+  // Display the selected provider(s)
   console.log('Selected providers:', result.providers);
+  // Show the unique session ID for this request
   console.log('Session ID:', result.session_id);
 }
 
@@ -59,10 +68,9 @@ You can also use NotDiamond with custom tools:
 ```typescript
 import { NotDiamond, Tool } from 'notdiamond';
 
-const notDiamond = new NotDiamond({
-  apiKey: process.env.NOTDIAMOND_API_KEY,
-});
+const notDiamond = new NotDiamond();
 
+// Define custom tools for the AI to use
 const tools: Tool[] = [
   {
     type: 'function',
@@ -88,8 +96,11 @@ async function toolCallingExample() {
       { provider: 'openai', model: 'gpt-4-1106-preview' },
       { provider: 'anthropic', model: 'claude-3-sonnet-20240229' },
     ],
+    // Include custom tools in the request
     tools: tools,
+    // Optimize for cost instead of latency
     tradeoff: 'cost',
+    // Allow selection of up to 2 models
     maxModelDepth: 2,
   });
 
