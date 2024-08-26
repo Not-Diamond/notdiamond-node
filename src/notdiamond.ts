@@ -74,22 +74,21 @@ export class NotDiamond {
 
   constructor(options: NotDiamondOptions = {}) {
     this.apiKey = options.apiKey || process.env.NOTDIAMOND_API_KEY || '';
-    this.apiUrl = options.apiUrl || process.env.NOTDIAMOND_API_URL || 'https://not-diamond-server.onrender.com';
+    this.apiUrl =
+      options.apiUrl ||
+      process.env.NOTDIAMOND_API_URL ||
+      'https://not-diamond-server.onrender.com';
     console.log('NotDiamond initialized with apiKey:', this.apiKey);
   }
 
   private getAuthHeader(): string {
-    const authHeader = `Bearer ${this.apiKey}`;
-    console.log('Generated auth header:', authHeader);
-    return authHeader;
+    return `Bearer ${this.apiKey}`;
   }
 
   private async postRequest<T>(
     url: string,
     body: object,
   ): Promise<T | NotDiamondErrorResponse> {
-    console.log('Sending POST request to URL:', url);
-    console.log('Request body:', body);
     try {
       const response = await fetch(url, {
         method: 'POST',
@@ -102,19 +101,13 @@ export class NotDiamond {
         body: JSON.stringify(body),
       });
 
-      console.log('Response status:', response.status);
-
       if (!response.ok) {
         const errorData = (await response.json()) as NotDiamondErrorResponse;
-        console.error('Error response data:', errorData);
         return { detail: errorData.detail };
       }
 
-      const responseData = (await response.json()) as T;
-      console.log('Response data:', responseData);
-      return responseData;
+      return (await response.json()) as T;
     } catch (error) {
-      console.error('An unexpected error occurred:', error);
       return { detail: 'An unexpected error occurred.' };
     }
   }
@@ -122,7 +115,6 @@ export class NotDiamond {
   async modelSelect(
     options: ModelSelectOptions,
   ): Promise<ModelSelectSuccessResponse | NotDiamondErrorResponse> {
-    console.log('Calling modelSelect with options:', options);
     const requestBody = {
       messages: options.messages,
       llm_providers: options.llmProviders.map((provider) => ({
@@ -157,7 +149,6 @@ export class NotDiamond {
           }),
       ...(options.default && { default: options.default }),
     };
-    console.log('Request body:', JSON.stringify(requestBody, null, 2));
     return this.postRequest<ModelSelectSuccessResponse>(
       `${this.apiUrl}/v2/modelRouter/modelSelect`,
       requestBody,

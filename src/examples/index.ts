@@ -41,8 +41,6 @@ async function performModelSelect(): Promise<ModelSelectSuccessResponse | null> 
     return null;
   }
 
-  const { providers, session_id } = result;
-  console.log({ providers, session_id });
   return result;
 }
 
@@ -61,8 +59,6 @@ async function provideFeedback(
     return null;
   }
 
-  const { session_id: feedbackSessionId } = result;
-  console.log({ feedbackSessionId });
   return result;
 }
 
