@@ -14,6 +14,10 @@ export interface NotDiamondOptions {
 export interface Provider {
   provider: string;
   model: string;
+  contextLength?: number;
+  inputPrice?: number;
+  outputPrice?: number;
+  latency?: number;
 }
 
 export interface NotDiamondErrorResponse {
@@ -121,7 +125,20 @@ export class NotDiamond {
     console.log('Calling modelSelect with options:', options);
     const requestBody = {
       messages: options.messages,
-      llm_providers: options.llmProviders,
+      llm_providers: options.llmProviders.map((provider) => ({
+        provider: provider.provider,
+        model: provider.model,
+        ...(provider.contextLength !== undefined && {
+          context_length: provider.contextLength,
+        }),
+        ...(provider.inputPrice !== undefined && {
+          input_price: provider.inputPrice,
+        }),
+        ...(provider.outputPrice !== undefined && {
+          output_price: provider.outputPrice,
+        }),
+        ...(provider.latency !== undefined && { latency: provider.latency }),
+      })),
       ...(options.tradeoff && {
         tradeoff: options.tradeoff,
       }),
