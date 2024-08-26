@@ -2,13 +2,15 @@ import * as dotenv from 'dotenv';
 import { version as SDK_VERSION } from '../package.json';
 dotenv.config();
 
+const DEFAULT_TIMEOUT = 5;
+
 const BASE_URL = 'https://not-diamond-server.onrender.com';
 const MODEL_SELECT_URL = `${BASE_URL}/v2/modelRouter/modelSelect`;
 const FEEDBACK_URL = `${BASE_URL}/v2/report/metrics/feedback`;
-const DEFAULT_TIMEOUT = 5;
 
 export interface NotDiamondOptions {
   apiKey?: string;
+  apiUrl?: string;
 }
 
 export interface Provider {
@@ -72,9 +74,11 @@ export interface FeedbackSuccessResponse {
 
 export class NotDiamond {
   private apiKey: string;
+  private apiUrl: string;
 
   constructor(options: NotDiamondOptions = {}) {
     this.apiKey = options.apiKey || process.env.NOTDIAMOND_API_KEY || '';
+    this.apiUrl = options.apiUrl || process.env.NOTDIAMOND_API_URL || BASE_URL;
   }
 
   private getAuthHeader(): string {
