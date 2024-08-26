@@ -50,6 +50,7 @@ export interface ModelSelectOptions {
   hashContent?: boolean;
   timeout?: number;
   default?: Provider | number | string;
+  previousSession?: string;
 }
 
 export interface ModelSelectSuccessResponse {
@@ -148,6 +149,9 @@ export class NotDiamond {
             timeout: DEFAULT_TIMEOUT,
           }),
       ...(options.default && { default: options.default }),
+      ...(options.previousSession && {
+        previous_session: options.previousSession,
+      }),
     };
     return this.postRequest<ModelSelectSuccessResponse>(
       MODEL_SELECT_URL,
