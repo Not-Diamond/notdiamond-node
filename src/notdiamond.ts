@@ -5,8 +5,6 @@ dotenv.config();
 const DEFAULT_TIMEOUT = 5;
 
 const BASE_URL = 'https://not-diamond-server.onrender.com';
-const MODEL_SELECT_URL = `${BASE_URL}/v2/modelRouter/modelSelect`;
-const FEEDBACK_URL = `${BASE_URL}/v2/report/metrics/feedback`;
 
 export interface NotDiamondOptions {
   apiKey?: string;
@@ -76,10 +74,14 @@ export interface FeedbackSuccessResponse {
 export class NotDiamond {
   private apiKey: string;
   private apiUrl: string;
+  private modelSelectUrl: string;
+  private feedbackUrl: string;
 
   constructor(options: NotDiamondOptions = {}) {
     this.apiKey = options.apiKey || process.env.NOTDIAMOND_API_KEY || '';
     this.apiUrl = options.apiUrl || process.env.NOTDIAMOND_API_URL || BASE_URL;
+    this.modelSelectUrl = `${this.apiUrl}/v2/modelRouter/modelSelect`;
+    this.feedbackUrl = `${this.apiUrl}/v2/report/metrics/feedback`;
   }
 
   private getAuthHeader(): string {
@@ -154,7 +156,7 @@ export class NotDiamond {
       }),
     };
     return this.postRequest<ModelSelectSuccessResponse>(
-      MODEL_SELECT_URL,
+      this.modelSelectUrl,
       requestBody,
     );
   }
@@ -162,7 +164,7 @@ export class NotDiamond {
   async feedback(
     options: FeedbackOptions,
   ): Promise<FeedbackSuccessResponse | NotDiamondErrorResponse> {
-    return this.postRequest<FeedbackSuccessResponse>(FEEDBACK_URL, {
+    return this.postRequest<FeedbackSuccessResponse>(this.feedbackUrl, {
       session_id: options.sessionId,
       feedback: options.feedback,
       provider: options.provider,
