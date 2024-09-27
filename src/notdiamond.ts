@@ -200,7 +200,16 @@ export class NotDiamond {
    * @returns The preference id.
    */
   async createPreferenceId(): Promise<string | NotDiamondErrorResponse> {
-    return this.postRequest<string>(this.createUrl, {});
+    const response = await this.postRequest<{ preference_id: string }>(
+      this.createUrl,
+      {},
+    );
+
+    if ('preference_id' in response) {
+      return response.preference_id;
+    }
+
+    throw new Error('Invalid response: preference_id not found');
   }
 
   /**
