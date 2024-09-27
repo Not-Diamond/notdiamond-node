@@ -20,7 +20,7 @@ To use the API, you need to sign up for a NotDiamond account and obtain an API k
 
 ### Basic Usage
 
-Here's a simple example of how to use NotDiamond to select the best model between GPT-4o, Claude 3.5 Sonnet, and Gemini 1.5 Pro, while optimizing for latency:
+Here's a simple example of how to use NotDiamond to select the best model between GPT-4o, Claude 3.5 Sonnet, and Gemini 1.5 Pro, while optimizing for latency and outputting the raw text:
 
 ```typescript
 import { NotDiamond } from 'notdiamond';
@@ -32,7 +32,7 @@ const notDiamond = new NotDiamond({
 
 async function basicExample() {
   // 1. Select the best model
-  const result = await notDiamond.modelSelect({
+  const result = await notDiamond.create({
     // Define the user's message
     messages: [{ content: 'What is 12x12?', role: 'user' }],
     // Specify the LLM providers and models to choose from
@@ -52,6 +52,8 @@ async function basicExample() {
   }
 
   // 3. Log the results
+  // Display the text response
+  console.log('LLM output:', result.content);
   // Display the selected provider(s)
   console.log('Selected providers:', result.providers);
   // Show the unique session ID for this request
@@ -118,7 +120,7 @@ toolCallingExample();
 
 ## API Reference
 
-For a complete API reference and more detailed documentation, please check our [API Documentation](https://notdiamond.readme.io/v0.1.0-beta/docs/getting-started).
+For a complete API reference and more detailed documentation, please check our [API Documentation](https://notdiamond.readme.io/docs/what-is-not-diamond#getting-started).
 
 ## Key Concepts
 

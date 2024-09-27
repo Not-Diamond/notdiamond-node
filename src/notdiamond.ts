@@ -1,5 +1,16 @@
 import * as dotenv from 'dotenv';
-import { version as SDK_VERSION } from '../package.json';
+import packageJson from '../package.json' assert { type: 'json' };
+import { callLLM } from './features/create';
+import { callLLMStream } from './features/create';
+import {
+  Provider,
+  SupportedProvider,
+  SupportedModel,
+} from './constants/providers';
+import axios from 'axios';
+import { z } from 'zod'; // Assuming zod is imported for the new responseModel field
+
+const SDK_VERSION = packageJson.version;
 dotenv.config();
 
 const DEFAULT_TIMEOUT = 5;
@@ -9,15 +20,9 @@ const BASE_URL = 'https://not-diamond-server.onrender.com';
 export interface NotDiamondOptions {
   apiKey?: string;
   apiUrl?: string;
-}
-
-export interface Provider {
-  provider: string;
-  model: string;
-  contextLength?: number;
-  inputPrice?: number;
-  outputPrice?: number;
-  latency?: number;
+  llmKeys?: Partial<
+    Record<(typeof SupportedProvider)[keyof typeof SupportedProvider], string>
+  >;
 }
 
 export interface NotDiamondErrorResponse {
@@ -49,6 +54,8 @@ export interface ModelSelectOptions {
   timeout?: number;
   default?: Provider | number | string;
   previousSession?: string;
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  responseModel?: z.ZodType<any>;
 }
 
 export interface ModelSelectSuccessResponse {
@@ -76,10 +83,12 @@ export class NotDiamond {
   private apiUrl: string;
   private modelSelectUrl: string;
   private feedbackUrl: string;
+  private llmKeys: Record<string, string>;
 
   constructor(options: NotDiamondOptions = {}) {
     this.apiKey = options.apiKey || process.env.NOTDIAMOND_API_KEY || '';
     this.apiUrl = options.apiUrl || process.env.NOTDIAMOND_API_URL || BASE_URL;
+    this.llmKeys = options.llmKeys || {};
     this.modelSelectUrl = `${this.apiUrl}/v2/modelRouter/modelSelect`;
     this.feedbackUrl = `${this.apiUrl}/v2/report/metrics/feedback`;
   }
@@ -93,28 +102,30 @@ export class NotDiamond {
     body: object,
   ): Promise<T | NotDiamondErrorResponse> {
     try {
-      const response = await fetch(url, {
-        method: 'POST',
+      const response = await axios.post(url, body, {
         headers: {
           Authorization: this.getAuthHeader(),
-          accept: 'application/json',
-          'content-type': 'application/json',
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
           'User-Agent': `TS-SDK/${SDK_VERSION}`,
         },
-        body: JSON.stringify(body),
       });
 
-      if (!response.ok) {
-        const errorData = (await response.json()) as NotDiamondErrorResponse;
-        return { detail: errorData.detail };
-      }
-
-      return (await response.json()) as T;
+      return response.data as T;
     } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return { detail: 'An error occurred.' };
+      }
+      console.error('error', error);
       return { detail: 'An unexpected error occurred.' };
     }
   }
 
+  /**
+   * Selects the best model for the given messages.
+   * @param options The options for the model.
+   * @returns The results of the model.
+   */
   async modelSelect(
     options: ModelSelectOptions,
   ): Promise<ModelSelectSuccessResponse | NotDiamondErrorResponse> {
@@ -133,6 +144,9 @@ export class NotDiamond {
           output_price: provider.outputPrice,
         }),
         ...(provider.latency !== undefined && { latency: provider.latency }),
+        ...(provider.isCustom !== undefined && {
+          is_custom: provider.isCustom,
+        }),
       })),
       ...(options.tradeoff && {
         tradeoff: options.tradeoff,
@@ -154,6 +168,9 @@ export class NotDiamond {
       ...(options.previousSession && {
         previous_session: options.previousSession,
       }),
+      ...(options.responseModel && {
+        response_model: options.responseModel,
+      }),
     };
     return this.postRequest<ModelSelectSuccessResponse>(
       this.modelSelectUrl,
@@ -161,6 +178,11 @@ export class NotDiamond {
     );
   }
 
+  /**
+   * Sends feedback to the NotDiamond API.
+   * @param options The options for the feedback.
+   * @returns The results of the feedback.
+   */
   async feedback(
     options: FeedbackOptions,
   ): Promise<FeedbackSuccessResponse | NotDiamondErrorResponse> {
@@ -170,4 +192,92 @@ export class NotDiamond {
       provider: options.provider,
     });
   }
+
+  /**
+   *
+   * @param options The options for the model.
+   * @returns A promise that resolves to the results of the model.
+   */
+  private async acreate(options: ModelSelectOptions) {
+    const selectedModel = await this.modelSelect(options);
+    const { providers } = selectedModel as ModelSelectSuccessResponse;
+    const content = await callLLM(providers[0], options, this.llmKeys);
+
+    return { content, providers };
+  }
+
+  /**
+   *
+   * @param options The options for the model.
+   * @param callback Optional callback function to handle the result.
+   * @returns A promise that resolves to the results of the model or a callback function
+   */
+  create(
+    options: ModelSelectOptions,
+    callback?: (
+      error: Error | null,
+      result?: { content: string; providers: Provider[] },
+    ) => void,
+  ) {
+    const promise = this.acreate(options);
+
+    if (callback) {
+      promise
+        .then((result) => callback(null, result))
+        .catch((error) => callback(error as Error));
+    } else {
+      return promise;
+    }
+  }
+
+  /**
+   * Streams the results of the model asynchronously.
+   * @param options The options for the model.
+   * @returns A promise that resolves to an object containing the provider and an AsyncIterable of strings.
+   */
+  private async astream(
+    options: ModelSelectOptions,
+  ): Promise<{ provider: Provider; stream: AsyncIterable<string> }> {
+    const selectedModel = await this.modelSelect(options);
+    const { providers } = selectedModel as ModelSelectSuccessResponse;
+
+    const stream = await Promise.resolve(
+      callLLMStream(providers?.[0] || 'openai', options, this.llmKeys),
+    );
+    return { provider: providers?.[0] || 'openai', stream };
+  }
+
+  /**
+   * Streams the results of the model.
+   * @param options The options for the model.
+   * @param callback Optional callback function to handle each chunk of the stream.
+   * @returns A promise that resolves to an object containing the provider and an AsyncIterable of strings or a callback function
+   */
+  stream(
+    options: ModelSelectOptions,
+    callback?: (
+      error: Error | null,
+      result?: { provider: Provider; chunk?: string },
+    ) => void,
+  ) {
+    if (!options.llmProviders || options.llmProviders.length === 0) {
+      throw new Error('No LLM providers specified');
+    }
+
+    const promise = this.astream(options);
+
+    if (callback) {
+      promise
+        .then(async ({ provider, stream }) => {
+          for await (const chunk of stream) {
+            callback(null, { provider, chunk });
+          }
+        })
+        .catch((error) => callback(error as Error));
+    } else {
+      return promise;
+    }
+  }
 }
+
+export { SupportedProvider, SupportedModel };
