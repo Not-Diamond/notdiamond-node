@@ -83,6 +83,7 @@ export class NotDiamond {
   private apiUrl: string;
   private modelSelectUrl: string;
   private feedbackUrl: string;
+  private createUrl: string;
   private llmKeys: Record<string, string>;
 
   constructor(options: NotDiamondOptions = {}) {
@@ -91,6 +92,7 @@ export class NotDiamond {
     this.llmKeys = options.llmKeys || {};
     this.modelSelectUrl = `${this.apiUrl}/v2/modelRouter/modelSelect`;
     this.feedbackUrl = `${this.apiUrl}/v2/report/metrics/feedback`;
+    this.createUrl = `${this.apiUrl}/v2/preferences/userPreferenceCreate`;
   }
 
   private getAuthHeader(): string {
@@ -191,6 +193,14 @@ export class NotDiamond {
       feedback: options.feedback,
       provider: options.provider,
     });
+  }
+
+  /**
+   * Creates a preference id.
+   * @returns The preference id.
+   */
+  async createPreferenceId(): Promise<string | NotDiamondErrorResponse> {
+    return this.postRequest<string>(this.createUrl, {});
   }
 
   /**
