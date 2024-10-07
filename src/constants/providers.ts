@@ -138,7 +138,10 @@ export interface Provider<
   model: ModelForProvider<T>;
   contextLength?: number;
   inputPrice?: number;
+  customInputPrice?: number;
   outputPrice?: number;
+  customOutputPrice?: number;
   latency?: number;
+  customLatency?: number;
   isCustom?: boolean;
 }

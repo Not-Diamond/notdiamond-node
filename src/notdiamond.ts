@@ -139,11 +139,20 @@ export class NotDiamond {
         ...(provider.contextLength !== undefined && {
           context_length: provider.contextLength,
         }),
+        ...(provider.customInputPrice !== undefined && {
+          input_price: provider.customInputPrice,
+        }),
         ...(provider.inputPrice !== undefined && {
           input_price: provider.inputPrice,
         }),
+        ...(provider.customOutputPrice !== undefined && {
+          output_price: provider.customOutputPrice,
+        }),
         ...(provider.outputPrice !== undefined && {
           output_price: provider.outputPrice,
+        }),
+        ...(provider.customLatency !== undefined && {
+          latency: provider.customLatency,
         }),
         ...(provider.latency !== undefined && { latency: provider.latency }),
         ...(provider.isCustom !== undefined && {
