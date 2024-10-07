@@ -15,7 +15,7 @@ dotenv.config();
 
 const DEFAULT_TIMEOUT = 5;
 
-const BASE_URL = 'https://not-diamond-server.onrender.com';
+const BASE_URL = 'https://api.notdiamond.ai';
 
 export interface NotDiamondOptions {
   apiKey?: string;
