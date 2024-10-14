@@ -261,9 +261,22 @@ export class NotDiamond {
     const { providers } = selectedModel as ModelSelectSuccessResponse;
 
     const stream = await Promise.resolve(
-      callLLMStream(providers?.[0] || 'openai', options, this.llmKeys),
+      callLLMStream(
+        providers?.[0] || {
+          provider: 'openai',
+          model: 'gpt-3.5-turbo',
+        },
+        options,
+        this.llmKeys,
+      ),
     );
-    return { provider: providers?.[0] || 'openai', stream };
+    return {
+      provider: providers?.[0] || {
+        provider: 'openai',
+        model: 'gpt-3.5-turbo',
+      },
+      stream,
+    };
   }
 
   /**
@@ -283,6 +296,7 @@ export class NotDiamond {
       throw new Error('No LLM providers specified');
     }
 
+    console.log('options received from stream', options);
     const promise = this.astream(options);
 
     if (callback) {
