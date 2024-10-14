@@ -296,7 +296,6 @@ export class NotDiamond {
       throw new Error('No LLM providers specified');
     }
 
-    console.log('options received from stream', options);
     const promise = this.astream(options);
 
     if (callback) {
