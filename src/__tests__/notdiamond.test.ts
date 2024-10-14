@@ -19,10 +19,12 @@ const llmProviders: Provider[] = [
   {
     provider: 'openai',
     model: 'gpt-4o-2024-05-13',
+    systemPrompt: 'You are a helpful assistant.',
   },
   {
     provider: 'anthropic',
     model: 'claude-3-opus-20240229',
+    systemPrompt: 'You only respond in French.',
   },
 ];
 const tools: Tool[] = [
@@ -109,7 +111,14 @@ describe('NotDiamond', () => {
       };
 
       notDiamond.modelSelect = jest.fn().mockResolvedValue({
-        providers: [{ provider: 'openai', model: 'gpt-4' }],
+        providers: [
+          {
+            provider: 'openai',
+            model: 'gpt-4',
+            systemPrompt:
+              'You are a helpful assistant that only responds in French.',
+          },
+        ],
         session_id: 'test-session-id',
       });
 
