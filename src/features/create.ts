@@ -130,10 +130,35 @@ export async function callLLM(
   llmKeys: Record<string, string>,
 ): Promise<string> {
   const model = getLangChainModel(provider, llmKeys, options.responseModel);
-  const langChainMessages = options.messages.map(convertToLangChainMessage);
+  const langChainMessages = extendProviderSystemPrompt(
+    options.messages.map(convertToLangChainMessage),
+    options,
+    provider,
+  );
 
   const response = await model.invoke(langChainMessages);
   return extractContent(response);
+}
+
+/**
+ * Extends the system prompt for the given provider.
+ * @param messages The messages to extend.
+ * @param options The options for the model.
+ * @param provider Extend messages with the system prompt for this provider, if provided
+ * @returns The extended messages.
+ */
+function extendProviderSystemPrompt(
+  messages: BaseMessage[],
+  options: ModelSelectOptions,
+  provider: Provider,
+): BaseMessage[] {
+  const matchingProvider = options.llmProviders.find(
+    (p) => p.provider === provider.provider && p.model === provider.model,
+  );
+  if (matchingProvider && matchingProvider.systemPrompt) {
+    messages.unshift(new SystemMessage(matchingProvider.systemPrompt));
+  }
+  return messages;
 }
 
 /**
@@ -168,7 +193,11 @@ export async function* callLLMStream(
   llmKeys: Record<string, string>,
 ): AsyncGenerator<string> {
   const model = getLangChainModel(provider, llmKeys, options.responseModel);
-  const langChainMessages = options.messages.map(convertToLangChainMessage);
+  const langChainMessages = extendProviderSystemPrompt(
+    options.messages.map(convertToLangChainMessage),
+    options,
+    provider,
+  );
 
   const stream = await model.stream(langChainMessages);
 

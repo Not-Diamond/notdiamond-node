@@ -146,4 +146,5 @@ export interface Provider<
   latency?: number;
   customLatency?: number;
   isCustom?: boolean;
+  systemPrompt?: string;
 }
