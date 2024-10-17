@@ -128,6 +128,7 @@ export async function callLLM(
   provider: Provider,
   options: ModelSelectOptions,
   llmKeys: Record<string, string>,
+  runtimeArgs: Record<string, string>,
 ): Promise<string> {
   const model = getLangChainModel(provider, llmKeys, options.responseModel);
   const langChainMessages = extendProviderSystemPrompt(
@@ -136,7 +137,7 @@ export async function callLLM(
     provider,
   );
 
-  const response = await model.invoke(langChainMessages);
+  const response = await model.invoke(langChainMessages, runtimeArgs);
   return extractContent(response);
 }
 
@@ -191,6 +192,7 @@ export async function* callLLMStream(
   provider: Provider,
   options: ModelSelectOptions,
   llmKeys: Record<string, string>,
+  runtimeArgs: Record<string, string>,
 ): AsyncGenerator<string> {
   const model = getLangChainModel(provider, llmKeys, options.responseModel);
   const langChainMessages = extendProviderSystemPrompt(
@@ -199,7 +201,7 @@ export async function* callLLMStream(
     provider,
   );
 
-  const stream = await model.stream(langChainMessages);
+  const stream = await model.stream(langChainMessages, runtimeArgs);
 
   for await (const chunk of stream) {
     yield extractContent(chunk);
