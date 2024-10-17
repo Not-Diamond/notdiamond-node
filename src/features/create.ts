@@ -128,7 +128,7 @@ export async function callLLM(
   provider: Provider,
   options: ModelSelectOptions,
   llmKeys: Record<string, string>,
-  runtimeArgs: Record<string, string>,
+  runtimeArgs?: Record<string, string>,
 ): Promise<string> {
   const model = getLangChainModel(provider, llmKeys, options.responseModel);
   const langChainMessages = extendProviderSystemPrompt(
@@ -192,7 +192,7 @@ export async function* callLLMStream(
   provider: Provider,
   options: ModelSelectOptions,
   llmKeys: Record<string, string>,
-  runtimeArgs: Record<string, string>,
+  runtimeArgs?: Record<string, string>,
 ): AsyncGenerator<string> {
   const model = getLangChainModel(provider, llmKeys, options.responseModel);
   const langChainMessages = extendProviderSystemPrompt(

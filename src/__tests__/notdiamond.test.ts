@@ -131,6 +131,18 @@ describe('NotDiamond', () => {
         console.error('Error in create:', error);
         throw error;
       }
+
+      try {
+        const response = await notDiamond.create(options, {
+          temperature: '1',
+        });
+
+        expect(response).toHaveProperty('content');
+        expect(response).toHaveProperty('providers');
+      } catch (error) {
+        console.error('Error in create:', error);
+        throw error;
+      }
     });
 
     it('should handle errors', async () => {
