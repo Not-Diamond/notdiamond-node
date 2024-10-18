@@ -226,10 +226,18 @@ export class NotDiamond {
    * @param options The options for the model.
    * @returns A promise that resolves to the results of the model.
    */
-  private async acreate(options: ModelSelectOptions) {
+  private async acreate(
+    options: ModelSelectOptions,
+    runtimeArgs: Record<string, string> = {},
+  ) {
     const selectedModel = await this.modelSelect(options);
     const { providers } = selectedModel as ModelSelectSuccessResponse;
-    const content = await callLLM(providers[0], options, this.llmKeys);
+    const content = await callLLM(
+      providers[0],
+      options,
+      this.llmKeys,
+      runtimeArgs,
+    );
 
     return { content, providers };
   }
@@ -242,12 +250,13 @@ export class NotDiamond {
    */
   create(
     options: ModelSelectOptions,
+    runtimeArgs: Record<string, string> = {},
     callback?: (
       error: Error | null,
       result?: { content: string; providers: Provider[] },
     ) => void,
   ) {
-    const promise = this.acreate(options);
+    const promise = this.acreate(options, runtimeArgs);
 
     if (callback) {
       promise
@@ -265,6 +274,7 @@ export class NotDiamond {
    */
   private async astream(
     options: ModelSelectOptions,
+    runtimeArgs: Record<string, string> = {},
   ): Promise<{ provider: Provider; stream: AsyncIterable<string> }> {
     const selectedModel = await this.modelSelect(options);
     const { providers } = selectedModel as ModelSelectSuccessResponse;
@@ -277,6 +287,7 @@ export class NotDiamond {
         },
         options,
         this.llmKeys,
+        runtimeArgs,
       ),
     );
     return {
@@ -296,6 +307,7 @@ export class NotDiamond {
    */
   stream(
     options: ModelSelectOptions,
+    runtimeArgs: Record<string, string> = {},
     callback?: (
       error: Error | null,
       result?: { provider: Provider; chunk?: string },
@@ -305,7 +317,7 @@ export class NotDiamond {
       throw new Error('No LLM providers specified');
     }
 
-    const promise = this.astream(options);
+    const promise = this.astream(options, runtimeArgs);
 
     if (callback) {
       promise
