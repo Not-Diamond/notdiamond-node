@@ -6,6 +6,7 @@ import {
   Provider,
   SupportedProvider,
   SupportedModel,
+  ProviderModelMap,
 } from './constants/providers';
 import axios from 'axios';
 import { z } from 'zod'; // Assuming zod is imported for the new responseModel field
@@ -104,6 +105,7 @@ export class NotDiamond {
     body: object,
   ): Promise<T | NotDiamondErrorResponse> {
     try {
+      console.log({ auth: this.getAuthHeader() });
       const response = await axios.post(url, body, {
         headers: {
           Authorization: this.getAuthHeader(),
@@ -113,8 +115,11 @@ export class NotDiamond {
         },
       });
 
+      console.log({ response });
+
       return response.data as T;
     } catch (error) {
+      console.log({ error });
       if (axios.isAxiosError(error) && error.response) {
         return { detail: 'An error occurred.' };
       }
@@ -260,6 +265,7 @@ export class NotDiamond {
     const selectedModel = await this.modelSelect(options);
     const { providers } = selectedModel as ModelSelectSuccessResponse;
 
+    console.log({ selectedModel });
     const stream = await Promise.resolve(
       callLLMStream(providers?.[0] || 'openai', options, this.llmKeys),
     );
@@ -299,4 +305,4 @@ export class NotDiamond {
   }
 }
 
-export { SupportedProvider, SupportedModel };
+export { SupportedProvider, SupportedModel, ProviderModelMap };

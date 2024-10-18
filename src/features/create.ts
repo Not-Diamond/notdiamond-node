@@ -12,7 +12,6 @@ import { ChatAnthropic } from '@langchain/anthropic';
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 import { ChatMistralAI } from '@langchain/mistralai';
 import { ChatPerplexity } from '../models/perplexity';
-import { ChatCohere } from '@langchain/cohere';
 import { ChatTogetherAI } from '@langchain/community/chat_models/togetherai';
 import { Provider, SupportedProvider } from '../constants/providers';
 import { ZodType, ZodTypeDef } from 'zod';
@@ -30,8 +29,10 @@ function getLangChainModel(
   llmKeys: Record<string, string>,
   responseModel: ZodType<any, ZodTypeDef, any> | undefined,
 ): BaseChatModel {
-  const { OPENAI, ANTHROPIC, GOOGLE, MISTRAL, PERPLEXITY, COHERE, TOGETHER } =
+  const { OPENAI, ANTHROPIC, GOOGLE, MISTRAL, PERPLEXITY, TOGETHER } =
     SupportedProvider;
+
+  console.log(provider);
 
   switch (provider.provider) {
     case OPENAI:
@@ -87,17 +88,6 @@ function getLangChainModel(
       }
       return new ChatPerplexity({
         apiKey: llmKeys.perplexity || process.env.PPLX_API_KEY || '',
-        model: provider.model,
-      });
-    case COHERE:
-      if (responseModel) {
-        return new ChatCohere({
-          apiKey: process.env.COHERE_API_KEY || llmKeys.cohere,
-          model: provider.model,
-        }).withStructuredOutput(responseModel) as unknown as BaseChatModel;
-      }
-      return new ChatCohere({
-        apiKey: process.env.COHERE_API_KEY || llmKeys.cohere,
         model: provider.model,
       });
     case TOGETHER:

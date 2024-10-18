@@ -4,7 +4,6 @@ export const SupportedProvider = {
   GOOGLE: 'google',
   MISTRAL: 'mistral',
   PERPLEXITY: 'perplexity',
-  COHERE: 'cohere',
   TOGETHER: 'together',
 } as const;
 
@@ -108,10 +107,6 @@ export const ProviderModelMap = {
   ],
   [SupportedProvider.PERPLEXITY]: [
     SupportedModel.LLAMA_3_1_SONAR_LARGE_128K_ONLINE,
-  ],
-  [SupportedProvider.COHERE]: [
-    SupportedModel.COMMAND_R,
-    SupportedModel.COMMAND_R_PLUS,
   ],
   [SupportedProvider.TOGETHER]: [
     SupportedModel.MISTRAL_7B_INSTRUCT_V0_2,
