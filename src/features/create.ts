@@ -30,7 +30,7 @@ function getLangChainModel(
   llmKeys: Record<string, string>,
   responseModel: ZodType<any, ZodTypeDef, any> | undefined,
 ): BaseChatModel {
-  const { OPENAI, ANTHROPIC, GOOGLE, MISTRAL, PERPLEXITY, COHERE, TOGETHER } =
+  const { OPENAI, ANTHROPIC, GOOGLE, MISTRAL, PERPLEXITY, COHERE, TOGETHERAI } =
     SupportedProvider;
 
   switch (provider.provider) {
@@ -100,15 +100,15 @@ function getLangChainModel(
         apiKey: process.env.COHERE_API_KEY || llmKeys.cohere,
         model: provider.model,
       });
-    case TOGETHER:
+    case TOGETHERAI:
       if (responseModel) {
         return new ChatTogetherAI({
-          apiKey: process.env.TOGETHER_API_KEY || llmKeys.together,
+          apiKey: process.env.TOGETHERAI_API_KEY || llmKeys.togetherai,
           model: provider.model,
         }).withStructuredOutput(responseModel) as unknown as BaseChatModel;
       }
       return new ChatTogetherAI({
-        apiKey: process.env.TOGETHER_API_KEY || llmKeys.together,
+        apiKey: process.env.TOGETHERAI_API_KEY || llmKeys.togetherai,
         model: provider.model,
       });
     default:

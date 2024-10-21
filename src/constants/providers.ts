@@ -5,7 +5,7 @@ export const SupportedProvider = {
   MISTRAL: 'mistral',
   PERPLEXITY: 'perplexity',
   COHERE: 'cohere',
-  TOGETHER: 'together',
+  TOGETHERAI: 'togetherai',
 } as const;
 
 export const SupportedModel = {
@@ -115,7 +115,7 @@ export const ProviderModelMap = {
     SupportedModel.COMMAND_R,
     SupportedModel.COMMAND_R_PLUS,
   ],
-  [SupportedProvider.TOGETHER]: [
+  [SupportedProvider.TOGETHERAI]: [
     SupportedModel.MISTRAL_7B_INSTRUCT_V0_2,
     SupportedModel.MIXTRAL_8X7B_INSTRUCT_V0_1,
     SupportedModel.MIXTRAL_8X22B_INSTRUCT_V0_1,
