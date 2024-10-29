@@ -1,3 +1,9 @@
+## [1.0.7](https://github.com/Not-Diamond/notdiamond-node/compare/v1.0.6...v1.0.7) (2024-10-29)
+
+### Bug Fixes
+
+- **release:** map together models ([77e7a56](https://github.com/Not-Diamond/notdiamond-node/commit/77e7a56c63084c945c30ee7016b173c257a50e91))
+
 ## [1.0.6](https://github.com/Not-Diamond/notdiamond-node/compare/v1.0.5...v1.0.6) (2024-10-29)
 
 ### Bug Fixes
