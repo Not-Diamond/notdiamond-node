@@ -1,3 +1,9 @@
+## [1.0.1](https://github.com/Not-Diamond/notdiamond-node/compare/v1.0.0...v1.0.1) (2024-10-29)
+
+### Bug Fixes
+
+- **release:** semantic release tag fix ([e9e17d2](https://github.com/Not-Diamond/notdiamond-node/commit/e9e17d25f014fa8f87e57c4b2b600896da2e004f))
+
 # 1.0.0 (2024-10-29)
 
 ### Bug Fixes
