@@ -6,6 +6,20 @@
 - **release:** semantic release branch ([269198f](https://github.com/Not-Diamond/notdiamond-node/commit/269198fe2e12d0e1dbf248e372bcae13eb5ce6ad))
 - **release:** semantic release branch ([eb21f78](https://github.com/Not-Diamond/notdiamond-node/commit/eb21f7801bdd31585d22463102aafa37c0fa9bab))
 - **release:** semantic release branch name ([b58a6de](https://github.com/Not-Diamond/notdiamond-node/commit/b58a6de47e43db7b6f2bb2cc3ad580f81de9395c))
+- **release:** semantic release tag fix ([a9bd464](https://github.com/Not-Diamond/notdiamond-node/commit/a9bd464998d01845351163cc4660e0d0748c05a0))
+
+### Features
+
+- support system prompts for TS providers ([#31](https://github.com/Not-Diamond/notdiamond-node/issues/31)) ([0084d5a](https://github.com/Not-Diamond/notdiamond-node/commit/0084d5aa21d72332a4ac49afbd724dfe836b4b2e))
+
+# 1.0.0 (2024-10-29)
+
+### Bug Fixes
+
+- **release:** semantic release ([8d766e8](https://github.com/Not-Diamond/notdiamond-node/commit/8d766e847f3c719304abc007499f306dbd883938))
+- **release:** semantic release branch ([269198f](https://github.com/Not-Diamond/notdiamond-node/commit/269198fe2e12d0e1dbf248e372bcae13eb5ce6ad))
+- **release:** semantic release branch ([eb21f78](https://github.com/Not-Diamond/notdiamond-node/commit/eb21f7801bdd31585d22463102aafa37c0fa9bab))
+- **release:** semantic release branch name ([b58a6de](https://github.com/Not-Diamond/notdiamond-node/commit/b58a6de47e43db7b6f2bb2cc3ad580f81de9395c))
 
 ### Features
 
