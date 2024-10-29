@@ -1,20 +1,12 @@
-# 1.0.0 (2024-10-21)
+# 1.0.3 (2024-10-29)
 
 ### Features
 
 - support system prompts for TS providers ([#31](https://github.com/Not-Diamond/notdiamond-node/issues/31)) ([0084d5a](https://github.com/Not-Diamond/notdiamond-node/commit/0084d5aa21d72332a4ac49afbd724dfe836b4b2e))
 
-# 1.0.0 (2024-10-18)
+# 1.0.2 (2024-10-18)
 
-### Features
-
-- support system prompts for TS providers ([#31](https://github.com/Not-Diamond/notdiamond-node/issues/31)) ([0084d5a](https://github.com/Not-Diamond/notdiamond-node/commit/0084d5aa21d72332a4ac49afbd724dfe836b4b2e))
-
-# 1.0.0 (2024-10-18)
-
-### Features
-
-- support system prompts for TS providers ([#31](https://github.com/Not-Diamond/notdiamond-node/issues/31)) ([0084d5a](https://github.com/Not-Diamond/notdiamond-node/commit/0084d5aa21d72332a4ac49afbd724dfe836b4b2e))
+# 1.0.1 (2024-10-18)
 
 # 1.0.0 (2024-10-16)
 
