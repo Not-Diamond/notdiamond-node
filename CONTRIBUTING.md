@@ -3,6 +3,6 @@
 ## Testing
 
 ```bash
-npm install 20
-npm run test
+yarn install
+yarn test
 ```
