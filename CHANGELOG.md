@@ -1,3 +1,9 @@
+## [1.0.8](https://github.com/Not-Diamond/notdiamond-node/compare/v1.0.7...v1.0.8) (2024-10-29)
+
+### Bug Fixes
+
+- **release:** revert to yarn ([c9f4c85](https://github.com/Not-Diamond/notdiamond-node/commit/c9f4c8521d91287b7f2d532d60727c1f282039e5))
+
 ## [1.0.7](https://github.com/Not-Diamond/notdiamond-node/compare/v1.0.6...v1.0.7) (2024-10-29)
 
 ### Bug Fixes
