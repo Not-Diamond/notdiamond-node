@@ -14,7 +14,11 @@ import { ChatMistralAI } from '@langchain/mistralai';
 import { ChatPerplexity } from '../models/perplexity';
 import { ChatCohere } from '@langchain/cohere';
 import { ChatTogetherAI } from '@langchain/community/chat_models/togetherai';
-import { Provider, SupportedProvider } from '../constants/providers';
+import {
+  Provider,
+  SupportedModel,
+  SupportedProvider,
+} from '../constants/providers';
 import { ZodType, ZodTypeDef } from 'zod';
 
 /**
@@ -104,17 +108,43 @@ function getLangChainModel(
       if (responseModel) {
         return new ChatTogetherAI({
           apiKey: process.env.TOGETHERAI_API_KEY || llmKeys.togetherai,
-          model: provider.model,
+          model: getTogetheraiModel(provider.model),
         }).withStructuredOutput(responseModel) as unknown as BaseChatModel;
       }
       return new ChatTogetherAI({
         apiKey: process.env.TOGETHERAI_API_KEY || llmKeys.togetherai,
-        model: provider.model,
+        model: getTogetheraiModel(provider.model),
       });
     default:
       throw new Error(`Unsupported provider: ${provider.provider as string}`);
   }
 }
+
+const getTogetheraiModel = (model: string) => {
+  if (
+    model === SupportedModel.MISTRAL_7B_INSTRUCT_V0_2 ||
+    model === SupportedModel.MIXTRAL_8X7B_INSTRUCT_V0_1 ||
+    model === SupportedModel.MIXTRAL_8X22B_INSTRUCT_V0_1
+  ) {
+    return `mistralai/${model}`;
+  }
+
+  if (
+    model === SupportedModel.LLAMA_3_70B_CHAT_HF ||
+    model === SupportedModel.LLAMA_3_8B_CHAT_HF ||
+    model === SupportedModel.LLAMA_3_1_8B_INSTRUCT_TURBO ||
+    model === SupportedModel.LLAMA_3_1_70B_INSTRUCT_TURBO ||
+    model === SupportedModel.LLAMA_3_1_405B_INSTRUCT_TURBO
+  ) {
+    return `meta-llama/${model}`;
+  }
+
+  if (model === SupportedModel.QWEN2_72B_INSTRUCT) {
+    return `Qwen/${model}`;
+  }
+
+  return model;
+};
 
 /**
  * Calls the LLM model and returns the results.
