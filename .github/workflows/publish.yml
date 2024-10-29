@@ -19,10 +19,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'yarn'
       - name: Install
-        run: yarn --frozen-lockfile
+        run: npm install
       - name: Bundle
-        run: yarn bundle
+        run: npm run bundle
+      - name: Bump version
+        run: npm version patch
       - name: Release
-        run: yarn release
+        run: npm run release
