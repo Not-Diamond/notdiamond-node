@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - 'main'
+      - 'release'
 
 jobs:
   publish:
@@ -15,14 +15,28 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'yarn'
-      - name: Install
+      - name: Install dependencies
         run: yarn --frozen-lockfile
       - name: Bundle
         run: yarn bundle
-      - name: Release
-        run: yarn release
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(release): prepare for release [skip ci]"
+          title: "chore(release): prepare for release"
+          body: "This PR is automatically created by the CI workflow to prepare for a new release."
+          branch: "release-candidate"
+          base: "main"
+      - name: Semantic Release
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
