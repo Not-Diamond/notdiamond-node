@@ -1,10 +1,9 @@
 name: Publish package to npm
 
 on:
-  workflow_dispatch:
   push:
     branches:
-      - 'main'
+      - 'release'
 
 jobs:
   publish:
@@ -15,14 +14,40 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'yarn'
-      - name: Install
+      - name: Install dependencies
         run: yarn --frozen-lockfile
       - name: Bundle
         run: yarn bundle
+      - name: Create Pull Request
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: Not-Diamond/notdiamond-node
+          event-type: pull_request
+          client-payload: |
+            {
+              "title": "Automated Release",
+              "body": "Automated release by semantic-release",
+              "head": "release-branch", # Replace with the branch you want to merge
+              "base": "main"
+            }
+      - name: Wait for Pull Request to be Merged
+        uses: github-actions/wait-for-pull-request@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: Not-Diamond/notdiamond-node
+          pull-request-number: ${{ github.event.pull_request.number }}
       - name: Release
-        run: yarn release
+        run: yarn semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          BRANCH: main
