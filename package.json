@@ -1,7 +1,7 @@
 {
   "name": "notdiamond",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.6",
   "author": "not-diamond",
   "license": "MIT",
   "description": "TS/JS client for the NotDiamond API",

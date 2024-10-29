@@ -4,6 +4,5 @@
 
 ```bash
 npm install 20
-yarn
-yarn test
+npm run test
 ```
