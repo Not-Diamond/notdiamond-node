@@ -1,3 +1,16 @@
+# 1.0.0 (2024-10-29)
+
+### Bug Fixes
+
+- **release:** semantic release tag fix ([1f8ab3f](https://github.com/Not-Diamond/notdiamond-node/commit/1f8ab3f432289ad8ca781a6c6724538ba656a5d1))
+- **release:** semantic release tag fix ([725b443](https://github.com/Not-Diamond/notdiamond-node/commit/725b443c576b6faedf215f9f4f2165f0c8d649e6))
+- **release:** semantic release tag fix ([e9e17d2](https://github.com/Not-Diamond/notdiamond-node/commit/e9e17d25f014fa8f87e57c4b2b600896da2e004f))
+- **release:** semantic release tag fix ([42bf640](https://github.com/Not-Diamond/notdiamond-node/commit/42bf64002ba521611caf15fda9d76327b938d961))
+
+### Features
+
+- support system prompts for TS providers ([#31](https://github.com/Not-Diamond/notdiamond-node/issues/31)) ([0084d5a](https://github.com/Not-Diamond/notdiamond-node/commit/0084d5aa21d72332a4ac49afbd724dfe836b4b2e))
+
 ## [1.0.1](https://github.com/Not-Diamond/notdiamond-node/compare/v1.0.0...v1.0.1) (2024-10-29)
 
 ### Bug Fixes
