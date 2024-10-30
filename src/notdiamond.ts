@@ -281,20 +281,14 @@ export class NotDiamond {
 
     const stream = await Promise.resolve(
       callLLMStream(
-        providers?.[0] || {
-          provider: 'openai',
-          model: 'gpt-3.5-turbo',
-        },
+        providers?.[0] || options.default,
         options,
         this.llmKeys,
         runtimeArgs,
       ),
     );
     return {
-      provider: providers?.[0] || {
-        provider: 'openai',
-        model: 'gpt-3.5-turbo',
-      },
+      provider: providers?.[0] || options.default,
       stream,
     };
   }
