@@ -118,6 +118,7 @@ export class NotDiamond {
       if (axios.isAxiosError(error) && error.response) {
         return { detail: 'An error occurred.' };
       }
+      console.error('error', error);
       return { detail: 'An unexpected error occurred.' };
     }
   }
