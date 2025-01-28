@@ -8,7 +8,7 @@ import {
   SupportedModel,
 } from './constants/providers';
 import axios from 'axios';
-import { z } from 'zod'; // Assuming zod is imported for the new responseModel field
+import { z } from 'zod';
 
 const SDK_VERSION = packageJson.version;
 dotenv.config();
