@@ -1,3 +1,9 @@
+## [1.0.10](https://github.com/Not-Diamond/notdiamond-node/compare/v1.0.9...v1.0.10) (2025-01-28)
+
+### Bug Fixes
+
+- trigger deploy ([4f07691](https://github.com/Not-Diamond/notdiamond-node/commit/4f07691263870f26eb186babba2a71155bb5e1ca))
+
 ## [1.0.9](https://github.com/Not-Diamond/notdiamond-node/compare/v1.0.8...v1.0.9) (2024-10-30)
 
 ### Bug Fixes
