@@ -61,7 +61,7 @@ export const SupportedModel = {
   LLAMA_3_1_8B_INSTRUCT_TURBO: 'Meta-Llama-3.1-8B-Instruct-Turbo',
   LLAMA_3_1_70B_INSTRUCT_TURBO: 'Meta-Llama-3.1-70B-Instruct-Turbo',
   LLAMA_3_1_405B_INSTRUCT_TURBO: 'Meta-Llama-3.1-405B-Instruct-Turbo',
-  LLAMA_3_1_SONAR_LARGE_128K_ONLINE: 'llama-3.1-sonar-large-128k-online',
+  PERPLEXITY_SONAR: 'sonar',
   OPEN_MISTRAL_NEMO: 'open-mistral-nemo',
   DEEPSEEK_R1: 'DeepSeek-R1',
 } as const;
@@ -118,7 +118,7 @@ export const ProviderModelMap = {
     SupportedModel.OPEN_MISTRAL_NEMO,
   ],
   [SupportedProvider.PERPLEXITY]: [
-    SupportedModel.LLAMA_3_1_SONAR_LARGE_128K_ONLINE,
+    SupportedModel.PERPLEXITY_SONAR,
   ],
   [SupportedProvider.COHERE]: [
     SupportedModel.COMMAND_R,
