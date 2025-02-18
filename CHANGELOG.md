@@ -1,3 +1,9 @@
+# [1.1.0](https://github.com/Not-Diamond/notdiamond-node/compare/v1.0.10...v1.1.0) (2025-02-18)
+
+### Features
+
+- remove deprecated llama sonar large and add perplexity sonar ([#48](https://github.com/Not-Diamond/notdiamond-node/issues/48)) ([5849134](https://github.com/Not-Diamond/notdiamond-node/commit/584913466d4cdbc3668092d54d3f29ef7d414e67))
+
 ## [1.0.10](https://github.com/Not-Diamond/notdiamond-node/compare/v1.0.9...v1.0.10) (2025-01-28)
 
 ### Bug Fixes
