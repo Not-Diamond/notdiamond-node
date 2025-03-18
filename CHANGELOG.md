@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/Not-Diamond/notdiamond-node/compare/v1.1.0...v1.1.1) (2025-03-18)
+
+### Bug Fixes
+
+- change eslint dependency ([114db87](https://github.com/Not-Diamond/notdiamond-node/commit/114db878a2e37a10662b49f21bd950b153b73183))
+- update dependencies ([60bb2f2](https://github.com/Not-Diamond/notdiamond-node/commit/60bb2f2b40919d8e3a66973fb476614e0f499b92))
+
 # [1.1.0](https://github.com/Not-Diamond/notdiamond-node/compare/v1.0.10...v1.1.0) (2025-02-18)
 
 ### Features
