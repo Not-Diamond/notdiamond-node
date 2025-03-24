@@ -26,6 +26,21 @@ const llmProviders: Provider[] = [
     model: 'claude-3-opus-20240229',
     systemPrompt: 'You only respond in French.',
   },
+  {
+    provider: 'anthropic',
+    model: 'claude-3-sonnet-20240229',
+    systemPrompt: 'You are Claude 3.7 Sonnet, a helpful assistant.',
+  },
+  {
+    provider: 'google',
+    model: 'gemini-2.0-flash',
+    systemPrompt: 'You are Gemini 2.0 Flash, a fast and efficient assistant.',
+  },
+  {
+    provider: 'openai',
+    model: 'gpt-4.5-preview',
+    systemPrompt: 'You are GPT-4.5, an advanced AI assistant.',
+  },
 ];
 const tools: Tool[] = [
   {
@@ -205,6 +220,104 @@ describe('NotDiamond', () => {
         expect(error).toBeInstanceOf(Error);
         // Update the expected error message if necessary
         expect((error as Error).message).toContain('fail is not defined');
+      }
+    });
+  });
+
+  describe('modelSelect should handle new models correctly', () => {
+    it('should work with Claude 3.7 Sonnet', async () => {
+      const options: ModelSelectOptions = {
+        messages,
+        llmProviders: [llmProviders[2]], // Claude 3.7 Sonnet only
+        tradeoff: 'cost',
+        timeout: 10,
+        tools,
+      };
+
+      try {
+        const response = await notDiamond.modelSelect(options);
+        if ('detail' in response) {
+          expect(() => {
+            throw new Error(`Unexpected error response: ${response.detail}`);
+          }).toThrow();
+        } else {
+          expect(response.providers[0].model).toBe('claude-3-sonnet-20240229');
+        }
+      } catch (error) {
+        console.error('Error in Claude 3.7 Sonnet test:', error);
+        throw error;
+      }
+    });
+
+    it('should work with Gemini 2.0 Flash', async () => {
+      const options: ModelSelectOptions = {
+        messages,
+        llmProviders: [llmProviders[3]], // Gemini 2.0 Flash only
+        tradeoff: 'latency',
+        timeout: 5,
+        tools,
+      };
+
+      try {
+        const response = await notDiamond.modelSelect(options);
+        if ('detail' in response) {
+          expect(() => {
+            throw new Error(`Unexpected error response: ${response.detail}`);
+          }).toThrow();
+        } else {
+          expect(response.providers[0].model).toBe('gemini-2.0-flash');
+        }
+      } catch (error) {
+        console.error('Error in Gemini 2.0 Flash test:', error);
+        throw error;
+      }
+    });
+
+    it('should work with GPT-4.5', async () => {
+      const options: ModelSelectOptions = {
+        messages,
+        llmProviders: [llmProviders[4]], // GPT-4.5 only
+        tradeoff: 'cost',
+        timeout: 10,
+        tools,
+      };
+
+      try {
+        const response = await notDiamond.modelSelect(options);
+        if ('detail' in response) {
+          expect(() => {
+            throw new Error(`Unexpected error response: ${response.detail}`);
+          }).toThrow();
+        } else {
+          expect(response.providers[0].model).toBe('gpt-4.5-preview');
+        }
+      } catch (error) {
+        console.error('Error in GPT-4.5 test:', error);
+        throw error;
+      }
+    });
+
+    it('should prioritize Gemini 2.0 Flash when latency is the tradeoff', async () => {
+      const options: ModelSelectOptions = {
+        messages,
+        llmProviders: llmProviders,
+        tradeoff: 'latency',
+        timeout: 5,
+        tools,
+      };
+
+      try {
+        const response = await notDiamond.modelSelect(options);
+        if ('detail' in response) {
+          expect(() => {
+            throw new Error(`Unexpected error response: ${response.detail}`);
+          }).toThrow();
+        } else {
+          expect(response.providers[0].model).toBe('gemini-2.0-flash');
+        }
+      } catch (error) {
+        console.error('Error in latency prioritization test:', error);
+        throw error;
       }
     });
   });
