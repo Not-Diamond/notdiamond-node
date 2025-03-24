@@ -1,3 +1,9 @@
+## [1.1.2](https://github.com/Not-Diamond/notdiamond-node/compare/v1.1.1...v1.1.2) (2025-03-24)
+
+### Bug Fixes
+
+- release new version for models ([4108832](https://github.com/Not-Diamond/notdiamond-node/commit/4108832aa2eda84bcf994223e75b58ea305b58b7))
+
 ## [1.1.1](https://github.com/Not-Diamond/notdiamond-node/compare/v1.1.0...v1.1.1) (2025-03-18)
 
 ### Bug Fixes
