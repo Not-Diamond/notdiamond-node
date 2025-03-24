@@ -2,8 +2,8 @@
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { ChatOpenAI } from '@langchain/openai';
 import {
-  HumanMessage,
   AIMessage,
+  HumanMessage,
   SystemMessage,
   BaseMessage,
 } from '@langchain/core/messages';
