@@ -23,13 +23,17 @@ export const SupportedModel = {
   GPT_4O_MINI_2024_07_18: 'gpt-4o-mini-2024-07-18',
   GPT_4O_MINI: 'gpt-4o-mini',
   GPT_4_0125_PREVIEW: 'gpt-4-0125-preview',
+  GPT_4_1: 'gpt-4.1',
+  GPT_4_1_MINI: 'gpt-4.1-mini',
+  GPT_4_1_NANO: 'gpt-4.1-nano',
   GPT_4_5_PREVIEW: 'gpt-4.5-preview',
   GPT_4_5_PREVIEW_2025_02_27: 'gpt-4.5-preview-2025-02-27',
-  CHATGPT_4O_LATEST: "chatgpt-4o-latest",
+  CHATGPT_4O_LATEST: 'chatgpt-4o-latest',
   O1_PREVIEW: 'o1-preview',
   O1_PREVIEW_2024_09_12: 'o1-preview-2024-09-12',
   O1_MINI: 'o1-mini',
   O1_MINI_2024_09_12: 'o1-mini-2024-09-12',
+
   CLAUDE_2_1: 'claude-2.1',
   CLAUDE_3_OPUS_20240229: 'claude-3-opus-20240229',
   CLAUDE_3_SONNET_20240229: 'claude-3-sonnet-20240229',
@@ -40,6 +44,9 @@ export const SupportedModel = {
   CLAUDE_3_5_HAIKU_20241022: 'claude-3-5-haiku-20241022',
   CLAUDE_3_7_SONNET_LATEST: 'claude-3-7-sonnet-latest',
   CLAUDE_3_7_SONNET_20250219: 'claude-3-7-sonnet-20250219',
+  CLAUDE_OPUS_4_20250514: 'claude-opus-4-20250514',
+  CLAUDE_SONNET_4_20250514: 'claude-sonnet-4-20250514',
+
   GEMINI_PRO: 'gemini-pro',
   GEMINI_1_PRO_LATEST: 'gemini-1.0-pro-latest',
   GEMINI_15_PRO_LATEST: 'gemini-1.5-pro-latest',
@@ -47,6 +54,9 @@ export const SupportedModel = {
   GEMINI_15_FLASH_LATEST: 'gemini-1.5-flash-latest',
   GEMINI_2_0_FLASH: 'gemini-2.0-flash',
   GEMINI_2_0_FLASH_001: 'gemini-2.0-flash-001',
+  GEMINI_2_5_FLASH: 'gemini-2.5-flash',
+  GEMINI_2_5_PRO: 'gemini-2.5-pro',
+
   COMMAND_R: 'command-r',
   COMMAND_R_PLUS: 'command-r-plus',
   MISTRAL_LARGE_LATEST: 'mistral-large-latest',
@@ -95,6 +105,9 @@ export const ProviderModelMap = {
     SupportedModel.CHATGPT_4O_LATEST,
     SupportedModel.GPT_4_5_PREVIEW,
     SupportedModel.GPT_4_5_PREVIEW_2025_02_27,
+    SupportedModel.GPT_4_1,
+    SupportedModel.GPT_4_1_MINI,
+    SupportedModel.GPT_4_1_NANO,
   ],
   [SupportedProvider.ANTHROPIC]: [
     SupportedModel.CLAUDE_2_1,
@@ -107,6 +120,8 @@ export const ProviderModelMap = {
     SupportedModel.CLAUDE_3_5_HAIKU_20241022,
     SupportedModel.CLAUDE_3_7_SONNET_LATEST,
     SupportedModel.CLAUDE_3_7_SONNET_20250219,
+    SupportedModel.CLAUDE_OPUS_4_20250514,
+    SupportedModel.CLAUDE_SONNET_4_20250514,
   ],
   [SupportedProvider.GOOGLE]: [
     SupportedModel.GEMINI_PRO,
@@ -116,6 +131,8 @@ export const ProviderModelMap = {
     SupportedModel.GEMINI_15_FLASH_LATEST,
     SupportedModel.GEMINI_2_0_FLASH,
     SupportedModel.GEMINI_2_0_FLASH_001,
+    SupportedModel.GEMINI_2_5_FLASH,
+    SupportedModel.GEMINI_2_5_PRO,
   ],
   [SupportedProvider.MISTRAL]: [
     SupportedModel.MISTRAL_LARGE_LATEST,
@@ -129,9 +146,7 @@ export const ProviderModelMap = {
     SupportedModel.OPEN_MIXTRAL_8X22B,
     SupportedModel.OPEN_MISTRAL_NEMO,
   ],
-  [SupportedProvider.PERPLEXITY]: [
-    SupportedModel.PERPLEXITY_SONAR,
-  ],
+  [SupportedProvider.PERPLEXITY]: [SupportedModel.PERPLEXITY_SONAR],
   [SupportedProvider.COHERE]: [
     SupportedModel.COMMAND_R,
     SupportedModel.COMMAND_R_PLUS,
