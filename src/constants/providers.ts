@@ -29,6 +29,8 @@ export const SupportedModel = {
   GPT_4_1_MINI_2025_04_14: 'gpt-4.1-mini-2025-04-14',
   GPT_4_1_NANO: 'gpt-4.1-nano',
   GPT_4_1_NANO_2025_04_14: 'gpt-4.1-nano-2025-04-14',
+  GPT_4_5_PREVIEW: 'gpt-4.5-preview',
+  GPT_4_5_PREVIEW_2025_02_27: 'gpt-4.5-preview-2025-02-27',
   CHATGPT_4O_LATEST: 'chatgpt-4o-latest',
   O1_PREVIEW: 'o1-preview',
   O1_PREVIEW_2024_09_12: 'o1-preview-2024-09-12',
