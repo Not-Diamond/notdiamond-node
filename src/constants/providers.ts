@@ -45,7 +45,7 @@ export const SupportedModel = {
   CLAUDE_SONNET_4_20250514: 'claude-sonnet-4-20250514',
   CLAUDE_OPUS_4_0: 'claude-opus-4-0',
   CLAUDE_SONNET_4_0: 'claude-sonnet-4-0',
-  CLAUDE_SONNET_4_5: 'claude-sonnet-4.5',
+  CLAUDE_SONNET_4_5: 'claude-sonnet-4-5',
 
   GEMINI_PRO: 'gemini-pro',
   GEMINI_1_PRO_LATEST: 'gemini-1.0-pro-latest',
