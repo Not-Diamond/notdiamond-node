@@ -33,7 +33,6 @@ export const SupportedModel = {
 
   CLAUDE_2_1: 'claude-2.1',
   CLAUDE_3_OPUS_20240229: 'claude-3-opus-20240229',
-  CLAUDE_3_SONNET_20240229: 'claude-3-sonnet-20240229',
   CLAUDE_3_HAIKU_20240307: 'claude-3-haiku-20240307',
   CLAUDE_3_5_HAIKU_20241022: 'claude-3-5-haiku-20241022',
   CLAUDE_3_7_SONNET_LATEST: 'claude-3-7-sonnet-latest',
@@ -109,7 +108,6 @@ export const ProviderModelMap = {
   [SupportedProvider.ANTHROPIC]: [
     SupportedModel.CLAUDE_2_1,
     SupportedModel.CLAUDE_3_OPUS_20240229,
-    SupportedModel.CLAUDE_3_SONNET_20240229,
     SupportedModel.CLAUDE_3_HAIKU_20240307,
     SupportedModel.CLAUDE_3_5_HAIKU_20241022,
     SupportedModel.CLAUDE_3_7_SONNET_LATEST,
