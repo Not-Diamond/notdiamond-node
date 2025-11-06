@@ -31,7 +31,6 @@ export const SupportedModel = {
   GPT_4_1_NANO_2025_04_14: 'gpt-4.1-nano-2025-04-14',
   CHATGPT_4O_LATEST: 'chatgpt-4o-latest',
 
-  CLAUDE_2_1: 'claude-2.1',
   CLAUDE_3_OPUS_20240229: 'claude-3-opus-20240229',
   CLAUDE_3_HAIKU_20240307: 'claude-3-haiku-20240307',
   CLAUDE_3_5_HAIKU_20241022: 'claude-3-5-haiku-20241022',
@@ -46,10 +45,6 @@ export const SupportedModel = {
   CLAUDE_HAIKU_4_5: 'claude-haiku-4-5',
   CLAUDE_HAIKU_4_5_20251001: 'claude-haiku-4-5-20251001',
 
-  GEMINI_PRO: 'gemini-pro',
-  GEMINI_1_PRO_LATEST: 'gemini-1.0-pro-latest',
-  GEMINI_15_PRO_LATEST: 'gemini-1.5-pro-latest',
-  GEMINI_15_PRO_EXP_0801: 'gemini-1.5-pro-exp-0801',
   GEMINI_15_FLASH_LATEST: 'gemini-1.5-flash-latest',
   GEMINI_2_0_FLASH: 'gemini-2.0-flash',
   GEMINI_2_0_FLASH_001: 'gemini-2.0-flash-001',
@@ -106,7 +101,6 @@ export const ProviderModelMap = {
     SupportedModel.GPT_4_1_NANO_2025_04_14,
   ],
   [SupportedProvider.ANTHROPIC]: [
-    SupportedModel.CLAUDE_2_1,
     SupportedModel.CLAUDE_3_OPUS_20240229,
     SupportedModel.CLAUDE_3_HAIKU_20240307,
     SupportedModel.CLAUDE_3_5_HAIKU_20241022,
@@ -122,10 +116,6 @@ export const ProviderModelMap = {
     SupportedModel.CLAUDE_HAIKU_4_5_20251001,
   ],
   [SupportedProvider.GOOGLE]: [
-    SupportedModel.GEMINI_PRO,
-    SupportedModel.GEMINI_1_PRO_LATEST,
-    SupportedModel.GEMINI_15_PRO_LATEST,
-    SupportedModel.GEMINI_15_PRO_EXP_0801,
     SupportedModel.GEMINI_15_FLASH_LATEST,
     SupportedModel.GEMINI_2_0_FLASH,
     SupportedModel.GEMINI_2_0_FLASH_001,
