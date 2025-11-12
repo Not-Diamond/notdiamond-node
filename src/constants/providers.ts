@@ -6,6 +6,7 @@ export const SupportedProvider = {
   PERPLEXITY: 'perplexity',
   COHERE: 'cohere',
   TOGETHERAI: 'togetherai',
+  MOONSHOTAI: 'moonshotai',
 } as const;
 
 export const SupportedModel = {
@@ -74,6 +75,7 @@ export const SupportedModel = {
   PERPLEXITY_SONAR: 'sonar',
   OPEN_MISTRAL_NEMO: 'open-mistral-nemo',
   DEEPSEEK_R1: 'DeepSeek-R1',
+  KIMI_K2_THINKING: 'kimi-k2-thinking',
 } as const;
 
 export const ProviderModelMap = {
@@ -151,6 +153,7 @@ export const ProviderModelMap = {
     SupportedModel.LLAMA_3_1_405B_INSTRUCT_TURBO,
     SupportedModel.DEEPSEEK_R1,
   ],
+  [SupportedProvider.MOONSHOTAI]: [SupportedModel.KIMI_K2_THINKING],
 } as const;
 
 type ProviderModelMapType = typeof ProviderModelMap;
