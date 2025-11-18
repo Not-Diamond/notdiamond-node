@@ -51,13 +51,24 @@ export class ChatMoonshotAI extends BaseChatModel<BaseChatModelCallOptions> {
       const { data } = await axios.post<{
         choices: [{ message: { content: string } }];
       }>(
-        'https://api.moonshot.cn/v1/chat/completions',
+        'https://api.moonshot.ai/v1/chat/completions',
         {
           model: this.model,
-          messages: messages.map((m) => ({
-            role: m._getType() === 'human' ? 'user' : m._getType(),
-            content: m.content,
-          })),
+          messages: messages.map((m) => {
+            const type = m._getType();
+            let role: string;
+            if (type === 'human') {
+              role = 'user';
+            } else if (type === 'ai') {
+              role = 'assistant';
+            } else {
+              role = type;
+            }
+            return {
+              role,
+              content: m.content,
+            };
+          }),
         },
         {
           headers: {
