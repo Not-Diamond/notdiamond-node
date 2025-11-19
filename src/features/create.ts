@@ -12,6 +12,7 @@ import { ChatAnthropic } from '@langchain/anthropic';
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 import { ChatMistralAI } from '@langchain/mistralai';
 import { ChatPerplexity } from '../models/perplexity';
+import { ChatMoonshotAI } from '../models/moonshotai';
 import { ChatCohere } from '@langchain/cohere';
 import { ChatTogetherAI } from '@langchain/community/chat_models/togetherai';
 import {
@@ -34,8 +35,16 @@ function getLangChainModel(
   llmKeys: Record<string, string>,
   responseModel: ZodType<any, ZodTypeDef, any> | undefined,
 ): BaseChatModel {
-  const { OPENAI, ANTHROPIC, GOOGLE, MISTRAL, PERPLEXITY, COHERE, TOGETHERAI } =
-    SupportedProvider;
+  const {
+    OPENAI,
+    ANTHROPIC,
+    GOOGLE,
+    MISTRAL,
+    PERPLEXITY,
+    COHERE,
+    TOGETHERAI,
+    MOONSHOTAI,
+  } = SupportedProvider;
 
   switch (provider.provider) {
     case OPENAI:
@@ -114,6 +123,17 @@ function getLangChainModel(
       return new ChatTogetherAI({
         apiKey: process.env.TOGETHERAI_API_KEY || llmKeys.togetherai,
         model: getTogetheraiModel(provider.model),
+      });
+    case MOONSHOTAI:
+      if (responseModel) {
+        return new ChatMoonshotAI({
+          apiKey: llmKeys.moonshotai || process.env.MOONSHOTAI_API_KEY || '',
+          model: provider.model,
+        }).withStructuredOutput(responseModel) as unknown as BaseChatModel;
+      }
+      return new ChatMoonshotAI({
+        apiKey: llmKeys.moonshotai || process.env.MOONSHOTAI_API_KEY || '',
+        model: provider.model,
       });
     default:
       throw new Error(`Unsupported provider: ${provider.provider as string}`);
